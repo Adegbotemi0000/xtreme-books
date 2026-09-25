@@ -45,6 +45,25 @@ if they're separate codebases.
 - A `react-three-fiber` Claude Code skill is already available for this project's use once
   implementation starts — no separate install needed for that.
 
+## Liquid-metal logo effect (candidate approaches)
+
+For animating the Xtreme Cr8tivity/Xtreme Books logo itself (a signature moment fitting the
+"cool, not vibecode" design bar), two options are on the table, both already available:
+
+- **`@paper-design/shaders-react`** (from
+  [paper-design/liquid-logo](https://github.com/paper-design/liquid-logo)) — an installable
+  npm shader library with a working reference demo (Next.js + React 19) at
+  [liquid.paper.design](https://liquid.paper.design). The more turnkey option if the final
+  frontend stack is React-based, since it's a real package rather than a technique to
+  hand-port.
+- **`liquid-logo` skill** (already available in this session, from `collidingScopes`) — a raw
+  WebGL1/GLSL fragment-shader technique (edge detection on the logo's alpha channel driving a
+  flowing, noise-perturbed vector field with metallic highlights), framework-free, meant to be
+  ported directly into a project rather than installed as a dependency.
+- Decide between them once the frontend framework is settled (see the marketing-site framework
+  note above) and an actual logo file exists to animate (see `08-branding-design.md`'s note
+  on sourcing a proper logo file beyond the current favicon-only assets).
+
 ## Payments & billing
 
 - **Paystack** — confirmed in the original brief for subscription billing (yearly plans).
