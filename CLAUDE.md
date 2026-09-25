@@ -102,6 +102,13 @@ the same reasoning applies here, at higher stakes since this is now multi-tenant
 - **Branding (interim):** use the existing Xtreme Cr8tivity Cr8 logo/favicon as a starting
   point (`brand/favicon-32.png`, `brand/favicon-192.png`) while dedicated Xtreme Books
   branding and the homepage design direction are worked out.
+- **Design bar:** explicitly *not* a continuation of `xtreme-finance-system`'s internal-tool
+  "Liquid Glass" look. This is a commercial product, and the target is Apple-level design
+  quality — user-friendly, superb, 3D and animated, with a specific point of view — and
+  explicitly not the generic, template-assembled "vibecode" aesthetic. Applies first to the
+  public marketing site/homepage, extending into the logged-in app's visual language too. The
+  business owner is installing dedicated UI/UX skills/tooling for this project before design
+  or UI code starts. See `docs/08-branding-design.md`.
 - **Business model:** self-service SaaS signup is the primary path; Xtreme Cr8tivity also
   offers paid setup/onboarding assistance as a service on top, for tenants who want
   hands-on help getting their company set up in the platform.

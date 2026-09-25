@@ -49,8 +49,12 @@ here should be silently assumed one way or the other while building.
 
 ## Design
 
-12. **Visual identity:** does Xtreme Books get its own distinct palette/typography, or extend
-    `xtreme-finance-system`'s existing "Liquid Glass" black/white/lime look under the same
-    Xtreme Cr8tivity parent brand? Tied to whichever UI/UX skills/direction get set up next.
+12. ~~**Visual identity:** does Xtreme Books get its own distinct palette/typography, or extend
+    `xtreme-finance-system`'s existing "Liquid Glass" black/white/lime look?~~ **Resolved
+    2026-09-25:** its own distinct identity, explicitly not an extension of
+    `xtreme-finance-system`'s internal-tool look — target is Apple-level, 3D/animated,
+    commercial-grade design, not a "vibecode" template aesthetic. See
+    `08-branding-design.md`. What's still open: the concrete palette/typography/motion system
+    itself, and which UI/UX skills/tooling the business owner brings in to define it.
 13. **Is there an existing Xtreme Cr8tivity logo file** (beyond the two favicon PNGs currently
     in `brand/`) that should be sourced before homepage design work starts?
