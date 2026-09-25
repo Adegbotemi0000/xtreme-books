@@ -34,13 +34,19 @@ Full context lives in `docs/` and `brief/`. Read in this order before starting w
 11. `docs/10-roadmap.md` — phased build plan
 12. `docs/11-open-questions.md` — decisions still needed from the business owner
 
-## Current phase: foundation only — no code yet
+## Current phase: public homepage build (2026-09-25 onward)
 
-We are in documentation and planning. **Do not scaffold or write application code until
-explicitly told to start building.** The business owner wants to bring in UI/UX skills/design
-direction before implementation begins, particularly for the public marketing site and the
-"modern homepage" requirement. Foundational docs should stay easy to revise until that
-direction is set.
+Foundation/documentation phase is complete. The business owner has installed UI/UX skills
+(`apple-design`, `ui-ux-pro-max` + pack, `liquid-glass`, `liquid-logo`, `react-three-fiber`,
+`shadergradient`) and confirmed the design bar (`08-branding-design.md`) and 3D/animation
+stack (`05-tech-stack.md`), and explicitly asked to start building the **public marketing
+homepage** — first-class, world-class ERP-SaaS quality, NRS-compliance messaging front and
+center, a soothing/calm feel, real 3D/animated elements, built with reference to real
+industry-leading SaaS homepages, not a generic template.
+
+The rest of the platform (tenant app, super-admin, backend, billing, etc.) is still **not**
+started — this phase is scoped to the public homepage/marketing site only. Don't scope-creep
+into application code beyond that without being asked.
 
 ## Ground rules for when building starts
 
