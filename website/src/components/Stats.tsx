@@ -31,11 +31,22 @@ function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   );
 }
 
-const FACTS = [
-  { to: 4, suffix: "", label: "Tax types automated — VAT, WHT, PAYE, CIT" },
-  { to: 100, suffix: "%", label: "Balanced double-entry, every transaction" },
-  { to: 10, suffix: "+", label: "Core modules from day one, on every plan" },
-  { to: 0, suffix: "", label: "Extra fee for payroll, wallet, or e-invoicing" },
+// Mixing numeric (animated) and text facts — the tax-type entry deliberately
+// isn't a count. Nigerian tax law has many tax types (Stamp Duty, CGT, Excise,
+// etc.); naming the ones this platform automates as a number invited reading
+// it as "Nigeria only has 4 taxes," which is wrong and looks uninformed.
+const FACTS: Array<
+  | { kind: "count"; to: number; suffix: string; label: string }
+  | { kind: "text"; display: string; label: string }
+> = [
+  {
+    kind: "text",
+    display: "VAT · WHT · PAYE · CIT",
+    label: "Tax types automated out of the box — more as your business needs them",
+  },
+  { kind: "count", to: 100, suffix: "%", label: "Balanced double-entry, every transaction" },
+  { kind: "count", to: 10, suffix: "+", label: "Core modules from day one, on every plan" },
+  { kind: "count", to: 0, suffix: "", label: "Extra fee for payroll, wallet, or e-invoicing" },
 ];
 
 export function Stats() {
@@ -44,8 +55,12 @@ export function Stats() {
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 sm:grid-cols-4">
         {FACTS.map((f) => (
           <div key={f.label} className="text-center">
-            <div className="font-display text-3xl text-primary sm:text-4xl">
-              <Counter to={f.to} suffix={f.suffix} />
+            <div className="font-display text-2xl text-primary sm:text-3xl">
+              {f.kind === "count" ? (
+                <Counter to={f.to} suffix={f.suffix} />
+              ) : (
+                <span>{f.display}</span>
+              )}
             </div>
             <p className="mt-2 text-sm leading-snug text-muted-foreground">{f.label}</p>
           </div>
