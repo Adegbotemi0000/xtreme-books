@@ -97,7 +97,7 @@ export function Hero() {
 
         <Reveal delay={0.32}>
           <p className="mt-6 text-sm text-muted-foreground">
-            No card required to start · Starter plan includes 2 users
+            No card required to start · Foundation plan includes 2 users
           </p>
         </Reveal>
       </div>

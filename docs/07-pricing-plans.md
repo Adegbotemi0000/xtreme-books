@@ -6,9 +6,9 @@ Yearly billing only for MVP, via Paystack. Plans differ by included user count:
 
 | Plan | Included users | Extra user cost |
 |---|---|---|
-| Starter | 2 | ₦80,000/user/year |
-| Growth | 5 | ₦80,000/user/year |
-| Scale | 10 | ₦80,000/user/year |
+| Foundation | 2 | ₦80,000/user/year |
+| Momentum | 5 | ₦80,000/user/year |
+| Enterprise | 10 | ₦80,000/user/year |
 
 - Additional users beyond a plan's included count can be added on **any** tier at the same
   ₦80,000/user/year rate.
@@ -29,7 +29,7 @@ Yearly billing only for MVP, via Paystack. Plans differ by included user count:
 - Failed/expired payment handling: a grace period, then restricted access — exact grace-period
   length and what "restricted" means (read-only vs fully locked) is configurable by
   Xtreme Cr8tivity via the super-admin panel, not hard-coded.
-- Adding users mid-cycle (crossing from Starter's 2 into paid add-ons, for example) should
+- Adding users mid-cycle (crossing from Foundation's 2 into paid add-ons, for example) should
   pro-rate against the current subscription year rather than requiring a full new annual
   payment — confirm this billing behavior before implementation (see
   `11-open-questions.md`).

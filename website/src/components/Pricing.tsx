@@ -6,19 +6,19 @@ import clsx from "clsx";
 
 const PLANS = [
   {
-    name: "Starter",
+    name: "Foundation",
     users: 2,
     tagline: "For a small team just getting off Excel.",
     featured: false,
   },
   {
-    name: "Growth",
+    name: "Momentum",
     users: 5,
     tagline: "The most common fit for a growing business.",
     featured: true,
   },
   {
-    name: "Scale",
+    name: "Enterprise",
     users: 10,
     tagline: "For multi-branch operations with a full team.",
     featured: false,
@@ -50,7 +50,7 @@ export function Pricing() {
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               Every module on every plan — payroll, wallet, and e-invoicing
-              included from Starter. Add seats any time at{" "}
+              included from Foundation. Add seats any time at{" "}
               <span className="font-semibold text-foreground">
                 ₦80,000/user/year
               </span>

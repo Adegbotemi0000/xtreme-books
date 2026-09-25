@@ -31,7 +31,7 @@ this before building — see `11-open-questions.md`.
   decide alongside the auth implementation.
 - **Subscription** — tenant_id, plan_id, status (active/expired/pending/suspended), start
   date, renewal date, included user count, paid user add-ons, Paystack reference.
-- **Plan** — id, name (Starter/Growth/Scale), included_user_count, price_per_year,
+- **Plan** — id, name (Foundation/Momentum/Enterprise), included_user_count, price_per_year,
   extra_user_price_per_year (₦80,000 default), is_active — configurable via super-admin, not
   hard-coded (see `07-pricing-plans.md`).
 - **DemoBooking** — name, company, email, phone, preferred_time, status, created_at.

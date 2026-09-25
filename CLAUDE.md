@@ -75,7 +75,7 @@ the same reasoning applies here, at higher stakes since this is now multi-tenant
 
 ## Decisions confirmed with the business owner
 
-- **Plans:** three tiers by included user count — Starter (2 users), Growth (5), Scale (10).
+- **Plans:** three tiers by included user count — Foundation (2 users), Momentum (5), Enterprise (10).
   Additional users beyond a plan's included count cost ₦80,000/user/year on any tier.
 - **Auth:** role-based access per tenant, with OTP verification on login, plus a full audit
   trail of user actions — per-tenant admins manage their own team's users/roles, matching

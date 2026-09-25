@@ -14,7 +14,7 @@ here should be silently assumed one way or the other while building.
      at all?
    This materially changes the invoicing UI and the transmission-retry/error-handling design.
 2. **Does anything beyond user count differentiate the three plans?** As currently confirmed,
-   Starter/Growth/Scale differ only by included user count (2/5/10), with every module
+   Foundation/Momentum/Enterprise differ only by included user count (2/5/10), with every module
    available on every plan. Confirm this is intentional — many SaaS competitors (including
    Zoho Books, named as a reference) gate some features by tier. If Xtreme Books stays
    user-count-only, that's a real differentiator worth stating clearly on the pricing page.
