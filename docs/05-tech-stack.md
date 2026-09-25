@@ -33,6 +33,18 @@ Two distinct surfaces, likely two separate frontends rather than one app trying 
 Both should share the design system/tokens once one exists (see `08-branding-design.md`), even
 if they're separate codebases.
 
+## 3D & animation (confirmed)
+
+- **React Three Fiber** (`@react-three/fiber`, from the `pmndrs` ecosystem) — confirmed as the
+  library for the 3D/animated work called for in `08-branding-design.md`'s design bar. It's a
+  React renderer for three.js: declarative JSX scenes with full access to three.js's API and
+  ecosystem (`@react-three/drei` for common helpers, GSAP or Framer Motion alongside it for
+  non-3D motion/scroll-driven animation). This targets the public marketing site primarily,
+  with real attention to mobile performance/graceful degradation rather than a
+  desktop-only showcase (see `08-branding-design.md`).
+- A `react-three-fiber` Claude Code skill is already available for this project's use once
+  implementation starts — no separate install needed for that.
+
 ## Payments & billing
 
 - **Paystack** — confirmed in the original brief for subscription billing (yearly plans).
