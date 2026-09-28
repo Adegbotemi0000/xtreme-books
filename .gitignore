@@ -3,3 +3,8 @@ node_modules/
 .env.local
 dist/
 *.zip
+
+# Claude Code's installed skill bundles (fonts, datasets, scripts) — local
+# tooling pulled in by plugins, not project source. Got committed by mistake
+# early on (395 files, mostly binary font files and CSV data tables).
+.claude/
