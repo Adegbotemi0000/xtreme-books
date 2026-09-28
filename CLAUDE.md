@@ -73,6 +73,37 @@ the same reasoning applies here, at higher stakes since this is now multi-tenant
   hidden in the UI. A tenant must never be able to see or query another tenant's data under
   any circumstance. This gets tested directly before every release, not assumed.
 
+## Feature parity with xtreme-finance-system
+
+Xtreme Books should ship with every meaningful feature/update that has landed in
+`xtreme-finance-system` (the internal tool), reimplemented fresh for this multi-tenant
+codebase — not shared code, but the same functional bar. In particular:
+
+- **"Ask GT" AI help assistant** — a floating chat button (avatar-style launcher, not a plain
+  icon) available on every logged-in page, answering two kinds of questions:
+  1. How-to / general accounting & Nigerian tax questions (VAT/PAYE/WHT/CIT) — answered by an
+     LLM (Gemini in the reference implementation), grounded with a system prompt describing
+     the app's own modules so answers match this product's actual UI/flows, not a generic
+     answer.
+  2. Questions about the tenant's own live figures (unpaid invoices, cash position, overdue
+     payments, etc.) — answered **entirely locally** by querying that tenant's own data
+     directly, never sent to the LLM/external API, and role-gated the same way the dashboard
+     itself is. This is the one part that needs care here: in a multi-tenant product, this
+     must be scoped strictly to the requesting user's own tenant — reuse the same
+     tenant-isolation guarantee (see "True multi-tenancy" ground rule above), don't bolt this
+     on as a special case that bypasses it.
+  Reference implementation: `xtreme-finance-system/backend/src/modules/assistant/` (Gemini
+  client using Node's built-in `https`, not `fetch`; local intent-matching for data questions;
+  suggested-question chips) and `xtreme-finance-system/frontend/src/components/AskGT.jsx`.
+- General feature/quality bar: the other recent hardening work on `xtreme-finance-system` —
+  granular role-based access enforced server-side, full audit logging on every financial
+  mutation, never-hard-delete, Excel/CSV import+export with templates across modules,
+  pagination on long lists, receipt/document upload directly in transaction forms — is the
+  baseline standard for this product too, not aspirational extras.
+
+When a fresh conversation starts work here, pull the concrete implementation details for any
+of the above from the `xtreme-finance-system` repo as needed rather than re-deriving them.
+
 ## Decisions confirmed with the business owner
 
 - **Plans:** three tiers by included user count — Foundation (2 users), Momentum (5), Enterprise (10).
