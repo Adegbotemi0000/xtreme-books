@@ -17,7 +17,11 @@ import { Building2, ArrowRight } from "lucide-react";
 import { api } from "../api/client";
 import { useAuth } from "../AuthContext";
 
-const CATEGORY_COLORS = ["#0036f3", "#bced00", "#ff381d", "#595959", "#7d8fff", "#e2f77a", "#ff8a75", "#959da5"];
+// Validated categorical palette (dataviz skill: node scripts/validate_palette.js) —
+// brand blue as slot 1, the rest snapped to the documented default order so
+// every adjacent pair clears the CVD/contrast gates. Not raw brand hexes
+// reused as chart colors — that reads as an unvalidated, "vibe-coded" choice.
+const CATEGORY_COLORS = ["#0036f3", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
 
 const MONTH_LABELS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function monthLabel(key) {
@@ -145,7 +149,7 @@ export function Dashboard() {
               <p style={{ fontSize: "0.8rem", color: "var(--muted)", marginTop: -2 }}>
                 Total unpaid bills: {fmt(summary.payablesTotal)}
               </p>
-              <AgingBar buckets={[{ key: "current", total: summary.payablesTotal }]} currentColor="#7d8fff" />
+              <AgingBar buckets={[{ key: "current", total: summary.payablesTotal }]} currentColor="#0036f3" />
             </div>
           </div>
 

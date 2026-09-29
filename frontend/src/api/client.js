@@ -66,14 +66,17 @@ export async function apiDownload(path) {
   URL.revokeObjectURL(url);
 }
 
-// For import: multipart file upload. Left off Content-Type so the browser
-// sets the multipart boundary itself.
-export async function apiUpload(path, file) {
+// For import/attachment: multipart file upload, with optional extra form
+// fields alongside the file (e.g. documents upload needs entityType/
+// entityId). Left off Content-Type so the browser sets the multipart
+// boundary itself.
+export async function apiUpload(path, file, fields = {}) {
   const headers = {};
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const formData = new FormData();
+  Object.entries(fields).forEach(([key, value]) => formData.append(key, value));
   formData.append("file", file);
 
   const res = await fetch(`/api${path}`, { method: "POST", headers, body: formData });

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
+import { DocumentUpload } from "../components/DocumentUpload";
 
 export function InvoiceDetail() {
   const { id } = useParams();
@@ -190,6 +191,8 @@ export function InvoiceDetail() {
           </form>
         </div>
       ) : null}
+
+      <DocumentUpload entityType="invoice" entityId={invoice.id} />
 
       {invoice.payments.length > 0 && (
         <div className="card">
