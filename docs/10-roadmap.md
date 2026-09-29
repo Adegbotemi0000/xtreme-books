@@ -20,23 +20,29 @@ the deployed environment, not just code-reviewed.
   reference's Organization Profile screen), dashboard with real charts, brand-color theming.
 - ✅ 15+ operational modules scaffolded with real backend + GL posting where applicable
   (see Phase 1 below for which are basic-CRUD vs full business logic).
-- ✅ Excel/CSV Template/Import/Export on Customers, Products, Suppliers, Staff, Projects,
-  Discounts, Branches.
-- ✅ Receipt/document upload — **invoices only**. Ported as a generic tenant-scoped module
-  (file bytes in Postgres, not disk — this runs as a Vercel serverless function, whose
-  filesystem doesn't persist between invocations, unlike `xtreme-finance-system`'s server).
+- ✅ Excel/CSV Template/Import/Export now covers every transactional module, not just simple
+  lists: Customers, Products, Suppliers, Staff, Projects, Discounts, Branches, **and now
+  Expenses, Purchases, Fixed Assets, Invoices** — the FK/line-item lookups these needed
+  (supplier/category/account/customer name -> id, one-row-one-line-item for Invoices, matching
+  `xtreme-finance-system`'s own simplification for bulk invoice import) are done. Fixed a real
+  latent bug in the process: the generic export handler read snake_case DB columns against
+  camelCase field keys, so Products' unitPrice/vatRate/reorderLevel and Staff's
+  bankName/bankAccountNumber/monthlySalary were silently exporting blank — fixed once, in the
+  shared handler, for every module.
+- ✅ Receipt/document upload — Invoices, Purchases, Expenses, Fixed Assets (a per-row paperclip
+  toggle on the last three, since none of them has a detail page like Invoices does). Ported as
+  a generic tenant-scoped module (file bytes in Postgres, not disk — this runs as a Vercel
+  serverless function, whose filesystem doesn't persist between invocations, unlike
+  `xtreme-finance-system`'s server).
 - ❌ **"Ask GT" is not actually built yet**, despite being called out as required (not
   aspirational) in this repo's own ground rules above. What exists today
   (`backend/src/modules/assistant/`, `frontend/src/components/ChatWidget.jsx`) is a ~50-line
   rule-based FAQ bot — no LLM backing, no local intent-matching against the tenant's own live
   figures, not an avatar-style launcher. This is the single highest-priority gap found in the
-  audit and should land before Phase 7, not as a launch-readiness afterthought.
-- ❌ Import/Export missing on Expenses, Purchases, Invoices — these need category/account/
-  line-item lookups resolved during import, not a simple CSV-to-row mapping, so they were
-  deliberately not shortcut alongside the simpler list modules above.
-- ❌ Receipt/document upload missing on Purchases, Expenses, Recurring Expenses, Fixed Assets,
-  Inventory — `xtreme-finance-system` has this on all of these; Kora only has a detail page
-  (a stable id to attach a document to) for Invoices so far.
+  audit — deliberately sequenced *after* finishing rollout of the features above across every
+  module, not before.
+- ❌ Receipt/document upload still missing on Recurring Expenses, Inventory —
+  `xtreme-finance-system` has this on both.
 - ❌ No pagination on any list page yet. `xtreme-finance-system` added this to every remaining
   unbounded list page as a dedicated pass — worth doing here before any tenant's list grows
   past a page or two, not after.
@@ -128,9 +134,13 @@ Tenant-scoped versions of the accounting modules already proven in `xtreme-finan
 - ❌ Reports Center (catalog of reports + sharing + selectable charts, replacing the current
   Reports stub) — real in `xtreme-finance-system`, added after this roadmap was first written.
 - ❌ Audit-Ready Report Pack (full bundle, all registers).
-- ⚠️ Full import/export coverage across every module — 7 of ~15 list modules done; see Status
-  snapshot for what's left and why (FK/line-item lookups, not a shortcut skipped by accident).
-- ❌ Receipt/document upload on every transaction form, not just Invoices — see Status snapshot.
+- ✅ Full import/export coverage across every transactional module (Customers, Products,
+  Suppliers, Staff, Projects, Discounts, Branches, Expenses, Purchases, Fixed Assets, Invoices).
+  Remaining candidates (Recurring Expenses, Inventory) don't exist as real modules yet — see
+  their own phases.
+- ⚠️ Receipt/document upload on every transaction form — Invoices, Purchases, Expenses, Fixed
+  Assets done; Recurring Expenses and Inventory still missing (blocked on those modules
+  existing at all, not on the upload feature itself — see Status snapshot).
 - ❌ Pagination on every list page — `xtreme-finance-system` did this as a dedicated pass across
   every remaining unbounded list; Kora has none yet.
 - ❌ Demo video hosting and documentation/resource centre live on the public site.
