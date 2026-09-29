@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Paperclip } from "lucide-react";
 import { api } from "../api/client";
+import { ImportExport } from "../components/ImportExport";
+import { DocumentUpload } from "../components/DocumentUpload";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -19,6 +22,7 @@ export function Expenses() {
     categoryId: "",
   });
   const [error, setError] = useState("");
+  const [attachId, setAttachId] = useState(null);
 
   function load() {
     api.get("/expenses").then(setExpenses);
@@ -113,6 +117,8 @@ export function Expenses() {
         </div>
       )}
 
+      <ImportExport basePath="/expenses" onImported={load} />
+
       <div className="card">
         {expenses.length === 0 ? (
           <div className="empty-state">No expenses yet.</div>
@@ -136,7 +142,10 @@ export function Expenses() {
                   <td>{e.account_name}</td>
                   <td>{fmt(e.amount)}</td>
                   <td>{new Date(e.date).toLocaleDateString()}</td>
-                  <td>
+                  <td style={{ display: "flex", gap: 6 }}>
+                    <button className="icon-btn" title="Attachments" onClick={() => setAttachId(attachId === e.id ? null : e.id)}>
+                      <Paperclip size={14} />
+                    </button>
                     <button className="btn secondary" onClick={() => handleArchive(e.id)}>
                       Archive
                     </button>
@@ -147,6 +156,8 @@ export function Expenses() {
           </table>
         )}
       </div>
+
+      {attachId && <DocumentUpload entityType="expense" entityId={attachId} />}
     </div>
   );
 }

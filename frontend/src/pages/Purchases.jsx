@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import { Paperclip } from "lucide-react";
 import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
+import { ImportExport } from "../components/ImportExport";
+import { DocumentUpload } from "../components/DocumentUpload";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -13,6 +16,7 @@ export function Purchases() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ supplierId: "", date: new Date().toISOString().slice(0, 10), total: "" });
   const [error, setError] = useState("");
+  const [attachId, setAttachId] = useState(null);
 
   function load() {
     api.get("/purchases").then(setPurchases);
@@ -108,6 +112,8 @@ export function Purchases() {
         </div>
       )}
 
+      <ImportExport basePath="/purchases" onImported={load} />
+
       <div className="card">
         {purchases.length === 0 ? (
           <div className="empty-state">No purchases yet.</div>
@@ -135,7 +141,10 @@ export function Purchases() {
                   <td>
                     <StatusPill status={p.status} />
                   </td>
-                  <td>
+                  <td style={{ display: "flex", gap: 6 }}>
+                    <button className="icon-btn" title="Attachments" onClick={() => setAttachId(attachId === p.id ? null : p.id)}>
+                      <Paperclip size={14} />
+                    </button>
                     {p.status === "pending_approval" && (
                       <button className="btn secondary" onClick={() => handleApprove(p.id)}>
                         Approve
@@ -153,6 +162,8 @@ export function Purchases() {
           </table>
         )}
       </div>
+
+      {attachId && <DocumentUpload entityType="purchase" entityId={attachId} />}
     </div>
   );
 }

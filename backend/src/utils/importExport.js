@@ -16,6 +16,18 @@ function normalizeHeader(h) {
   return String(h || "").trim().toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+// Export reads straight off whatever listFn returns — a raw DB row, whose
+// columns are snake_case, while field keys are camelCase (matching the
+// createFn/import side, which builds its own INSERT and never needs this).
+// Falls back to the snake_case form of the key so a field like "unitPrice"
+// still finds a row's unit_price column without every module needing to
+// hand-map its export shape.
+function fieldValue(record, key) {
+  if (record[key] !== undefined) return record[key];
+  const snake = key.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
+  return record[snake];
+}
+
 // f.note is optional — attaches a hover comment to the header cell instead of
 // lengthening the label itself, since the label is also what import parsing
 // matches column names against (see normalizeHeader/colIndex below).
@@ -170,7 +182,7 @@ function attachImportExport(router, { fields, createFn, listFn, writeRoles, enti
         headerRow.font = { bold: true };
         sheet.columns = fields.map((f) => ({ width: Math.max(16, f.label.length + 2) }));
         for (const record of records) {
-          sheet.addRow(fields.map((f) => record[f.key] ?? ""));
+          sheet.addRow(fields.map((f) => fieldValue(record, f.key) ?? ""));
         }
         return workbook.xlsx.writeBuffer();
       });

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Paperclip } from "lucide-react";
 import { api } from "../api/client";
+import { ImportExport } from "../components/ImportExport";
+import { DocumentUpload } from "../components/DocumentUpload";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -10,6 +13,7 @@ export function FixedAssets() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ name: "", category: "", purchaseDate: new Date().toISOString().slice(0, 10), cost: "", usefulLifeYears: "", salvageValue: 0 });
   const [error, setError] = useState("");
+  const [attachId, setAttachId] = useState(null);
 
   function load() {
     api.get("/fixed-assets").then(setAssets);
@@ -99,6 +103,8 @@ export function FixedAssets() {
         </div>
       )}
 
+      <ImportExport basePath="/fixed-assets" onImported={load} />
+
       <div className="card">
         {assets.length === 0 ? (
           <div className="empty-state">No fixed assets yet.</div>
@@ -123,18 +129,23 @@ export function FixedAssets() {
                   <td>{fmt(a.accumulated_depreciation)}</td>
                   <td>{fmt(a.cost - a.accumulated_depreciation)}</td>
                   <td>
-                    {a.disposed_at ? (
-                      <span className="status-pill cancelled">Disposed</span>
-                    ) : (
-                      <div style={{ display: "flex", gap: 6 }}>
-                        <button className="btn secondary" onClick={() => handleDepreciate(a.id)}>
-                          Run depreciation
-                        </button>
-                        <button className="btn secondary" onClick={() => handleDispose(a)}>
-                          Dispose
-                        </button>
-                      </div>
-                    )}
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <button className="icon-btn" title="Attachments" onClick={() => setAttachId(attachId === a.id ? null : a.id)}>
+                        <Paperclip size={14} />
+                      </button>
+                      {a.disposed_at ? (
+                        <span className="status-pill cancelled">Disposed</span>
+                      ) : (
+                        <>
+                          <button className="btn secondary" onClick={() => handleDepreciate(a.id)}>
+                            Run depreciation
+                          </button>
+                          <button className="btn secondary" onClick={() => handleDispose(a)}>
+                            Dispose
+                          </button>
+                        </>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -142,6 +153,8 @@ export function FixedAssets() {
           </table>
         )}
       </div>
+
+      {attachId && <DocumentUpload entityType="fixed_asset" entityId={attachId} />}
     </div>
   );
 }

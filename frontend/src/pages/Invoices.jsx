@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
+import { ImportExport } from "../components/ImportExport";
 
 export function Invoices() {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  function load() {
     api.get("/sales/invoices").then(setInvoices).finally(() => setLoading(false));
-  }, []);
+  }
+
+  useEffect(load, []);
 
   return (
     <div>
@@ -19,6 +22,8 @@ export function Invoices() {
           + New invoice
         </Link>
       </div>
+      <ImportExport basePath="/sales/invoices" onImported={load} />
+
       <div className="card">
         {loading ? (
           <p>Loading...</p>
