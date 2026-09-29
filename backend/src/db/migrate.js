@@ -40,10 +40,15 @@ async function migrate() {
   }
 
   console.log("Migrations up to date.");
-  await pool.end();
 }
 
-migrate().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+module.exports = { migrate };
+
+if (require.main === module) {
+  migrate()
+    .then(() => pool.end())
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+}
