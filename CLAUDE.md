@@ -1,4 +1,8 @@
-# Xtreme Books
+# Kora
+
+*Kora by Xtreme Cr8* — renamed from the working title "Xtreme Books" (2026-09-29). Any
+reference to "Xtreme Books" in older material (the original brief, early Notion notes) means
+this same product; the rename is cosmetic, not a scope change.
 
 ## What this is
 
@@ -14,7 +18,7 @@ internal tool built earlier for Xtreme Cr8tivity itself). Nothing in this repo t
 one. The functional depth of that build — its accounting modules, GL posting engine,
 approval/audit patterns, import/export conventions, and the hard lessons learned integrating
 NRS e-invoicing — is the design reference and starting point for this product's scope, not
-shared code. Xtreme Books is a fresh, multi-tenant codebase built from scratch.
+shared code. Kora is a fresh, multi-tenant codebase built from scratch.
 
 Full context lives in `docs/` and `brief/`. Read in this order before starting work:
 
@@ -48,6 +52,32 @@ The rest of the platform (tenant app, super-admin, backend, billing, etc.) is st
 started — this phase is scoped to the public homepage/marketing site only. Don't scope-creep
 into application code beyond that without being asked.
 
+## Brand & color palette (confirmed 2026-09-29)
+
+Kora's confirmed brand palette — used consistently across the tenant app and, where it fits
+the calmer marketing tone, the public site:
+
+| Token | Hex | Usage |
+|---|---|---|
+| Electric blue (`--primary`) | `#0036f3` | Primary actions, links, brand accent |
+| Lime (`--lime`) | `#bced00` | Success/positive/active states, sidebar active-nav accent, logo mark |
+| Red-orange (`--danger`) | `#ff381d` | Destructive actions, error states, negative chart series |
+| Near-black (`--ink`) | `#070707` | Dark surfaces (sidebar, auth-panel gradient) |
+| Dark warm gray (`--ink-soft`) | `#1e2121` | Secondary dark surface |
+| Mid gray (`--muted`) | `#595959` | Secondary text |
+| Cool gray (`--muted-light`) | `#959da5` | Tertiary text, disabled states |
+| Pale gray (`--border`) | `#c3cdd8`-family | Borders, dividers |
+
+Applied pattern in the logged-in app: a near-black sidebar (not the whole shell) with a lime
+active-item accent bar and lime logo mark, set against a light content area — electric blue
+carries primary buttons/links, lime carries success/positive signals, red-orange carries
+danger/negative. This reuses hues from `xtreme-finance-system`'s old black/lime "Liquid
+Glass" identity deliberately (the business owner's explicit direction, not a default), but in
+a fresh composition — dark sidebar + light content, not an all-dark "Liquid Glass" shell — so
+it satisfies both "have a real point of view" and "don't just clone the old internal tool's
+look." See `frontend/src/index.css` for the implemented tokens and
+`frontend/src/components/AuthLayout.jsx` for the auth-screen application of the palette.
+
 ## Ground rules for when building starts
 
 These carry over from `xtreme-finance-system`'s proven conventions — they worked there and
@@ -75,7 +105,7 @@ the same reasoning applies here, at higher stakes since this is now multi-tenant
 
 ## Feature parity with xtreme-finance-system
 
-Xtreme Books should ship with every meaningful feature/update that has landed in
+Kora should ship with every meaningful feature/update that has landed in
 `xtreme-finance-system` (the internal tool), reimplemented fresh for this multi-tenant
 codebase — not shared code, but the same functional bar. In particular:
 
@@ -137,15 +167,18 @@ of the above from the `xtreme-finance-system` repo as needed rather than re-deri
 - **Exports:** downloadable reports across all key areas (sales, expenses, tax, inventory at
   minimum), platform-wide, not a subset of modules.
 - **Branding (interim):** use the existing Xtreme Cr8tivity Cr8 logo/favicon as a starting
-  point (`brand/favicon-32.png`, `brand/favicon-192.png`) while dedicated Xtreme Books
-  branding and the homepage design direction are worked out.
-- **Design bar:** explicitly *not* a continuation of `xtreme-finance-system`'s internal-tool
-  "Liquid Glass" look. This is a commercial product, and the target is Apple-level design
-  quality — user-friendly, superb, 3D and animated, with a specific point of view — and
-  explicitly not the generic, template-assembled "vibecode" aesthetic. Applies first to the
-  public marketing site/homepage, extending into the logged-in app's visual language too. The
-  business owner is installing dedicated UI/UX skills/tooling for this project before design
-  or UI code starts. See `docs/08-branding-design.md`.
+  point (`brand/favicon-32.png`, `brand/favicon-192.png`, copied into each app as
+  `cr8-logo.png` for now) while dedicated Kora branding is finalized. The product name is
+  settled (**Kora**, full lockup **Kora by Xtreme Cr8**) and the color palette is settled (see
+  above); the logo mark itself is still the placeholder Cr8 asset.
+- **Design bar:** the target is Apple-level design quality — user-friendly, superb, 3D and
+  animated, with a specific point of view — and explicitly not the generic, template-assembled
+  "vibecode" aesthetic. Applies first to the public marketing site/homepage, extending into
+  the logged-in app's visual language too. Not a *literal* continuation of
+  `xtreme-finance-system`'s all-dark internal-tool "Liquid Glass" shell, but its black/lime/
+  electric-blue/red-orange color identity is deliberately reused (see "Brand & color palette"
+  above) — the business owner's explicit call, applied in a fresh composition rather than
+  copied wholesale. See `docs/08-branding-design.md`.
 - **Business model:** self-service SaaS signup is the primary path; Xtreme Cr8tivity also
   offers paid setup/onboarding assistance as a service on top, for tenants who want
   hands-on help getting their company set up in the platform.
