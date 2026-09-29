@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Building2, Link2, Landmark, ShieldCheck, Upload, Palette } from "lucide-react";
+import { Building2, Link2, Landmark, ShieldCheck, Upload, Palette, Settings2 } from "lucide-react";
 import { api } from "../api/client";
 import { useAuth } from "../AuthContext";
 import { Section } from "./Section";
@@ -10,6 +10,33 @@ const MONTHS = [
 ];
 
 const SWATCHES = ["#0036f3", "#ff381d", "#bced00", "#7c3aed", "#0ea5a4", "#e11d48", "#070707"];
+
+const BUSINESS_TYPES = [
+  "Sole Proprietorship",
+  "Limited Liability Company",
+  "Partnership",
+  "Public Limited Company",
+  "NGO / Non-profit",
+  "Cooperative",
+];
+
+const TEAM_SIZES = ["Just me", "2-5", "6-10", "11-25", "26-50", "51+"];
+
+const INDUSTRIES = [
+  "Retail", "Wholesale/Distribution", "Manufacturing", "Automotive", "Construction & Real Estate",
+  "Agriculture", "Hospitality & Food Service", "Healthcare", "Education", "Logistics & Transportation",
+  "Professional Services", "Technology", "Financial Services", "Media & Entertainment", "Other",
+];
+
+const DATE_FORMATS = ["DD-MM-YYYY", "MM-DD-YYYY", "YYYY-MM-DD"];
+
+const NG_STATES = [
+  "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Bayelsa", "Benue", "Borno",
+  "Cross River", "Delta", "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT (Abuja)", "Gombe",
+  "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi", "Kwara", "Lagos",
+  "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto",
+  "Taraba", "Yobe", "Zamfara",
+];
 
 // Fuller company profile, modeled on the field depth of comparable products'
 // Organization Profile screens — logo, brand color, company details,
@@ -32,6 +59,15 @@ export function CompanyProfileForm({ submitLabel = "Save changes", onSaved }) {
     website: tenant?.website || "",
     fiscalYearStartMonth: tenant?.fiscal_year_start_month || 1,
     brandColor: tenant?.brand_color || "#0036f3",
+    businessType: tenant?.business_type || "",
+    state: tenant?.state || "",
+    teamSize: tenant?.team_size || "",
+    city: tenant?.city || "",
+    postalCode: tenant?.postal_code || "",
+    socialHandle1: tenant?.social_handle_1 || "",
+    socialHandle2: tenant?.social_handle_2 || "",
+    description: tenant?.description || "",
+    dateFormat: tenant?.date_format || "DD-MM-YYYY",
   });
   const [logoPreview, setLogoPreview] = useState(tenant?.logo_url || null);
   const [logoUrl, setLogoUrl] = useState("");
@@ -151,19 +187,55 @@ export function CompanyProfileForm({ submitLabel = "Save changes", onSaved }) {
           </div>
           <div className="field">
             <label>Industry</label>
-            <input
-              placeholder="e.g. Retail, Manufacturing, Services"
-              value={form.industry}
-              onChange={(e) => setForm({ ...form, industry: e.target.value })}
-            />
+            <select value={form.industry} onChange={(e) => setForm({ ...form, industry: e.target.value })}>
+              <option value="">Select industry</option>
+              {INDUSTRIES.map((i) => (
+                <option key={i} value={i}>{i}</option>
+              ))}
+            </select>
           </div>
           <div className="field">
             <label>CAC registration number</label>
             <input value={form.cacNumber} onChange={(e) => setForm({ ...form, cacNumber: e.target.value })} />
           </div>
+          <div className="field">
+            <label>Business type</label>
+            <select value={form.businessType} onChange={(e) => setForm({ ...form, businessType: e.target.value })}>
+              <option value="">Select business type</option>
+              {BUSINESS_TYPES.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label>Team size</label>
+            <select value={form.teamSize} onChange={(e) => setForm({ ...form, teamSize: e.target.value })}>
+              <option value="">Select team size</option>
+              {TEAM_SIZES.map((t) => (
+                <option key={t} value={t}>{t}</option>
+              ))}
+            </select>
+          </div>
           <div className="field" style={{ gridColumn: "1 / -1" }}>
-            <label>Company address</label>
+            <label>Street address</label>
             <input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+          </div>
+          <div className="field">
+            <label>City</label>
+            <input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+          </div>
+          <div className="field">
+            <label>State</label>
+            <select value={form.state} onChange={(e) => setForm({ ...form, state: e.target.value })}>
+              <option value="">Select state</option>
+              {NG_STATES.map((s) => (
+                <option key={s} value={s}>{s}</option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label>Postal code</label>
+            <input value={form.postalCode} onChange={(e) => setForm({ ...form, postalCode: e.target.value })} />
           </div>
         </div>
       </Section>
@@ -177,6 +249,39 @@ export function CompanyProfileForm({ submitLabel = "Save changes", onSaved }) {
           <div className="field">
             <label>Website</label>
             <input placeholder="https://" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} />
+          </div>
+          <div className="field">
+            <label>Social handle 1</label>
+            <input placeholder="e.g. Instagram, X" value={form.socialHandle1} onChange={(e) => setForm({ ...form, socialHandle1: e.target.value })} />
+          </div>
+          <div className="field">
+            <label>Social handle 2</label>
+            <input placeholder="e.g. LinkedIn, Facebook" value={form.socialHandle2} onChange={(e) => setForm({ ...form, socialHandle2: e.target.value })} />
+          </div>
+          <div className="field" style={{ gridColumn: "1 / -1" }}>
+            <label>Company description</label>
+            <textarea
+              rows={3}
+              maxLength={500}
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+            />
+            <p style={{ fontSize: "0.74rem", color: "var(--muted)", marginTop: 4 }}>
+              {form.description.length}/500 characters
+            </p>
+          </div>
+        </div>
+      </Section>
+
+      <Section icon={Settings2} title="Preferences">
+        <div className="form-grid">
+          <div className="field">
+            <label>Date format</label>
+            <select value={form.dateFormat} onChange={(e) => setForm({ ...form, dateFormat: e.target.value })}>
+              {DATE_FORMATS.map((f) => (
+                <option key={f} value={f}>{f}</option>
+              ))}
+            </select>
           </div>
         </div>
       </Section>

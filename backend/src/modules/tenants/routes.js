@@ -34,14 +34,26 @@ router.patch(
       website,
       fiscalYearStartMonth,
       brandColor,
+      businessType,
+      state,
+      teamSize,
+      city,
+      postalCode,
+      socialHandle1,
+      socialHandle2,
+      description,
+      dateFormat,
     } = req.body;
     const { rows } = await pool.query(
       `UPDATE tenants SET name = COALESCE($1, name), cac_number = COALESCE($2, cac_number), tin = COALESCE($3, tin),
          nin = COALESCE($4, nin), bvn = COALESCE($5, bvn), address = $6, logo_url = COALESCE($7, logo_url),
          industry = $8, phone = $9, website = $10,
          fiscal_year_start_month = COALESCE($11, fiscal_year_start_month),
-         brand_color = COALESCE($12, brand_color), setup_completed = true
-       WHERE id = $13 RETURNING *`,
+         brand_color = COALESCE($12, brand_color), business_type = $13, state = $14, team_size = $15,
+         city = $16, postal_code = $17, social_handle_1 = $18, social_handle_2 = $19, description = $20,
+         date_format = COALESCE($21, date_format),
+         setup_completed = true
+       WHERE id = $22 RETURNING *`,
       [
         name || null,
         cacNumber || null,
@@ -55,6 +67,15 @@ router.patch(
         website || null,
         fiscalYearStartMonth || null,
         brandColor || null,
+        businessType || null,
+        state || null,
+        teamSize || null,
+        city || null,
+        postalCode || null,
+        socialHandle1 || null,
+        socialHandle2 || null,
+        description || null,
+        dateFormat || null,
         req.tenantId,
       ]
     );
