@@ -17,13 +17,30 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-white/70 py-16">
       <div className="mx-auto max-w-6xl px-6">
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-4">
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-5">
           <div className="col-span-2 sm:col-span-1">
-            <p className="font-display text-lg text-foreground">Xtreme Books</p>
+            <p className="font-display text-lg text-foreground">Kora</p>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Accounting, payroll, and e-invoicing for Nigerian businesses.
-              By Xtreme Cr8tivity Xpressions Limited.
+              Kora by Xtreme Cr8tivity Xpressions Limited.
             </p>
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-foreground">Support</p>
+            <ul className="mt-4 space-y-2.5 text-sm text-muted-foreground">
+              <li>Mon–Fri, 9am–5pm WAT</li>
+              <li>Replies within 1 business day</li>
+              <li>
+                <a href="mailto:xc@cr8.com.ng" className="hover:text-foreground">
+                  xc@cr8.com.ng
+                </a>
+              </li>
+              <li>
+                <a href="tel:+2347046367754" className="hover:text-foreground">
+                  +234 704 636 7754
+                </a>
+              </li>
+            </ul>
           </div>
           {COLUMNS.map((col) => (
             <div key={col.title}>

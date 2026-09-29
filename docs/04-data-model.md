@@ -106,7 +106,7 @@ additions (IRN, pension, CIT, multi-branch, wallet).
 ## What's deliberately not copied
 
 `xtreme-finance-system` had exactly one admin login provisioned up front, with that admin
-creating everyone else. Xtreme Books has no such single admin — every tenant gets its own
+creating everyone else. Kora has no such single admin — every tenant gets its own
 admin at signup, and there's a separate super-admin role for Xtreme Cr8tivity's own platform
 staff, unrelated to any tenant's user table. Don't port the "one admin, provisioned outside
 the app" assumption anywhere into this model.

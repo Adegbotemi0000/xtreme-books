@@ -2,7 +2,7 @@
 
 ## Interim branding
 
-While dedicated Xtreme Books branding and homepage design direction are worked out, use the
+While dedicated Kora branding and homepage design direction are worked out, use the
 existing Xtreme Cr8tivity brand assets as a starting point:
 
 - `brand/favicon-32.png`, `brand/favicon-192.png` — the same favicons used in
@@ -29,7 +29,7 @@ rather than designed ad hoc page by page.
 This is explicitly **not** a continuation of `xtreme-finance-system`'s look. That build is an
 internal operational tool — a competent, no-nonsense "Liquid Glass" utility UI (frosted
 panels, black/white/lime, dense tables, get-the-job-done) built for one company's own staff to
-use daily. Xtreme Books is a **commercial product** other businesses will discover, evaluate,
+use daily. Kora is a **commercial product** other businesses will discover, evaluate,
 and pay for, and the bar is correspondingly higher:
 
 - **Apple-level design quality** — the explicit reference point. Meaning: restraint,
@@ -50,7 +50,7 @@ and pay for, and the bar is correspondingly higher:
   so the product doesn't feel like a downgrade the moment a customer logs in — see the shared
   design-system note below.
 
-This resolves part of Open Question #12 in `11-open-questions.md`: Xtreme Books gets its own
+This resolves part of Open Question #12 in `11-open-questions.md`: Kora gets its own
 distinct visual identity — it does not extend `xtreme-finance-system`'s existing look. What's
 still open is the specific palette/typography/motion system itself, which depends on whatever
 UI/UX skills/tooling the business owner is about to bring in.

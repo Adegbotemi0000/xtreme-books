@@ -47,7 +47,7 @@ if they're separate codebases.
 
 ## Liquid-metal logo effect (candidate approaches)
 
-For animating the Xtreme Cr8tivity/Xtreme Books logo itself (a signature moment fitting the
+For animating the Xtreme Cr8tivity/Kora logo itself (a signature moment fitting the
 "cool, not vibecode" design bar), two options are on the table, both already available:
 
 - **`@paper-design/shaders-react`** (from

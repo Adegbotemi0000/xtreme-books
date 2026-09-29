@@ -16,7 +16,7 @@ here should be silently assumed one way or the other while building.
 2. **Does anything beyond user count differentiate the three plans?** As currently confirmed,
    Foundation/Momentum/Enterprise differ only by included user count (2/5/10), with every module
    available on every plan. Confirm this is intentional — many SaaS competitors (including
-   Zoho Books, named as a reference) gate some features by tier. If Xtreme Books stays
+   Zoho Books, named as a reference) gate some features by tier. If Kora stays
    user-count-only, that's a real differentiator worth stating clearly on the pricing page.
 3. **Base yearly price per tier.** ₦80,000/user/year is confirmed for add-on users; the base
    subscription price for each tier itself is not yet set.
@@ -49,7 +49,7 @@ here should be silently assumed one way or the other while building.
 
 ## Design
 
-12. ~~**Visual identity:** does Xtreme Books get its own distinct palette/typography, or extend
+12. ~~**Visual identity:** does Kora get its own distinct palette/typography, or extend
     `xtreme-finance-system`'s existing "Liquid Glass" black/white/lime look?~~ **Resolved
     2026-09-25:** its own distinct identity, explicitly not an extension of
     `xtreme-finance-system`'s internal-tool look — target is Apple-level, 3D/animated,

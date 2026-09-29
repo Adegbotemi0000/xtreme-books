@@ -4,11 +4,12 @@ import { LiquidGlass } from "@liquidglassjs/react";
 import Link from "next/link";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { appLoginUrl } from "@/lib/appUrl";
 
 const LINKS = [
-  { href: "#modules", label: "Product" },
-  { href: "#compliance", label: "Compliance" },
-  { href: "#pricing", label: "Pricing" },
+  { href: "/#modules", label: "Product" },
+  { href: "/#compliance", label: "Compliance" },
+  { href: "/pricing", label: "Pricing" },
 ];
 
 export function Nav() {
@@ -27,7 +28,7 @@ export function Nav() {
             to stack above it, or the frost blurs the content itself. */}
         <div className="relative z-10 flex items-center justify-between px-5 py-3">
           <Link href="/" className="font-display text-lg tracking-tight text-foreground">
-            Xtreme Books
+            Kora
           </Link>
 
           <nav className="hidden items-center gap-8 md:flex">
@@ -44,17 +45,17 @@ export function Nav() {
 
           <div className="hidden items-center gap-3 md:flex">
             <a
-              href="#login"
+              href={appLoginUrl()}
               className="text-sm font-medium text-foreground/70 transition-colors hover:text-foreground"
             >
               Log in
             </a>
-            <a
-              href="#get-started"
+            <Link
+              href="/pricing"
               className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-on-primary shadow-sm transition-transform hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
             >
               Get started
-            </a>
+            </Link>
           </div>
 
           <button
@@ -82,12 +83,19 @@ export function Nav() {
             </a>
           ))}
           <a
-            href="#get-started"
+            href={appLoginUrl()}
+            onClick={() => setOpen(false)}
+            className="rounded-lg px-3 py-2 text-sm font-medium text-foreground/80 hover:bg-muted"
+          >
+            Log in
+          </a>
+          <Link
+            href="/pricing"
             onClick={() => setOpen(false)}
             className="mt-2 rounded-full bg-primary px-4 py-2 text-center text-sm font-semibold text-on-primary"
           >
             Get started
-          </a>
+          </Link>
         </div>
       )}
     </header>

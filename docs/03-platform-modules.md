@@ -1,7 +1,7 @@
 # 03 — Platform-Side Modules
 
 These are the pieces `xtreme-finance-system` never needed, because it only ever had one
-tenant (Xtreme Cr8tivity itself) and one login provisioned by hand. Xtreme Books is a public
+tenant (Xtreme Cr8tivity itself) and one login provisioned by hand. Kora is a public
 product — these modules are what make it one.
 
 ## 3.1 Public Marketing Website

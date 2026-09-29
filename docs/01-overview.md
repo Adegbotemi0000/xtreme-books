@@ -2,7 +2,7 @@
 
 ## What we're building
 
-Xtreme Books is a cloud-based, multi-tenant accounting, bookkeeping, payroll, and
+Kora is a cloud-based, multi-tenant accounting, bookkeeping, payroll, and
 e-invoicing platform for businesses operating in Nigeria. Any company can sign up online,
 verify its identity, subscribe to a plan, and immediately begin managing its full financial
 operations — sales, purchases, expenses, inventory, payroll, cash/bank, and complete
@@ -66,7 +66,7 @@ Not to be copied verbatim, but studied for expected feature depth and UX quality
   accounts, statutory payroll calculations, POS payment methods) are informed by matching or
   exceeding what a product like this already offers in-market.
 
-Xtreme Books must be an original build with its own design, tailored specifically to
+Kora must be an original build with its own design, tailored specifically to
 Nigerian tax law and NRS e-invoicing — neither reference product natively supports NRS REV
 360 the way this platform requires.
 

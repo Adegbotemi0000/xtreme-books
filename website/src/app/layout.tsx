@@ -21,7 +21,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Xtreme Books — Accounting, Payroll & E-Invoicing for Nigerian Businesses",
+  title: "Kora — Accounting, Payroll & E-Invoicing for Nigerian Businesses",
   description:
     "Cloud accounting, payroll, inventory, and NRS REV 360 e-invoicing built for Nigerian businesses. Full double-entry books, VAT/WHT/PAYE/CIT compliance, and an IRN on every invoice — from day one.",
 };

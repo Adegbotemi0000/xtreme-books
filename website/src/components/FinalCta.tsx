@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { ArrowRight, PlayCircle } from "lucide-react";
 import { Reveal } from "./Reveal";
 
@@ -24,8 +25,8 @@ export function FinalCta() {
             Set up your company in minutes. Cancel any time.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="#get-started"
+            <Link
+              href="/pricing"
               className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-semibold text-primary shadow-lg transition-transform hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
             >
               Get started free
@@ -33,7 +34,7 @@ export function FinalCta() {
                 size={18}
                 className="transition-transform group-hover:translate-x-0.5"
               />
-            </a>
+            </Link>
             <a
               href="#demo"
               className="inline-flex items-center gap-2 rounded-full border border-white/40 px-7 py-3.5 text-base font-semibold text-white transition-colors hover:bg-white/10 cursor-pointer"

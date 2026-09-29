@@ -3,22 +3,26 @@
 import { Check } from "lucide-react";
 import { Reveal } from "./Reveal";
 import clsx from "clsx";
+import { appSignupUrl } from "@/lib/appUrl";
 
 const PLANS = [
   {
     name: "Foundation",
+    slug: "foundation",
     users: 2,
     tagline: "For a small team just getting off Excel.",
     featured: false,
   },
   {
     name: "Momentum",
+    slug: "momentum",
     users: 5,
     tagline: "The most common fit for a growing business.",
     featured: true,
   },
   {
     name: "Enterprise",
+    slug: "enterprise",
     users: 10,
     tagline: "For multi-branch operations with a full team.",
     featured: false,
@@ -92,7 +96,7 @@ export function Pricing() {
                 </p>
 
                 <a
-                  href="#get-started"
+                  href={appSignupUrl(plan.slug)}
                   className={clsx(
                     "mt-8 inline-flex items-center justify-center rounded-full px-6 py-3 text-sm font-semibold transition-transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer",
                     plan.featured

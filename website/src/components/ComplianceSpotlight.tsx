@@ -25,7 +25,7 @@ export function ComplianceSpotlight() {
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
             Nigerian tax law changed with NTA 2025 — and it will change again.
-            Every tax rule in Xtreme Books lives as editable data your
+            Every tax rule in Kora lives as editable data your
             accountant controls, not code that needs a developer every time
             the rules move.
           </p>

@@ -1,9 +1,12 @@
 "use client";
 
+import Link from "next/link";
 import { ShaderGradientCanvas, ShaderGradient } from "@shadergradient/react";
 import { LiquidGlass } from "@liquidglassjs/react";
 import { ShieldCheck, ArrowRight, PlayCircle } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { Hero3D } from "./Hero3D";
+import { FloatingPreview } from "./FloatingPreview";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
 
 export function Hero() {
@@ -41,6 +44,7 @@ export function Hero() {
         </ShaderGradientCanvas>
         {/* Wash to keep text contrast solid regardless of the shader's motion */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-white/70 to-background" />
+        <Hero3D />
       </div>
 
       <div className="mx-auto flex w-full max-w-6xl flex-col items-center px-6 text-center">
@@ -75,8 +79,8 @@ export function Hero() {
 
         <Reveal delay={0.24}>
           <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row">
-            <a
-              href="#get-started"
+            <Link
+              href="/pricing"
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-base font-semibold text-on-primary shadow-lg shadow-primary/20 transition-transform hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
             >
               Get started free
@@ -84,7 +88,7 @@ export function Hero() {
                 size={18}
                 className="transition-transform group-hover:translate-x-0.5"
               />
-            </a>
+            </Link>
             <a
               href="#demo"
               className="inline-flex items-center gap-2 rounded-full border border-border bg-white/70 px-7 py-3.5 text-base font-semibold text-foreground shadow-sm transition-colors hover:bg-white cursor-pointer"
@@ -99,6 +103,10 @@ export function Hero() {
           <p className="mt-6 text-sm text-muted-foreground">
             No card required to start · Foundation plan includes 2 users
           </p>
+        </Reveal>
+
+        <Reveal delay={0.4}>
+          <FloatingPreview />
         </Reveal>
       </div>
     </section>
