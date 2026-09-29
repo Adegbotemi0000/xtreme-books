@@ -18,7 +18,7 @@ const SWATCHES = ["#0036f3", "#ff381d", "#bced00", "#7c3aed", "#0ea5a4", "#e11d4
 // is a stand-in: no verification vendor is selected yet
 // (docs/11-open-questions.md #8), so this records the number against the
 // profile rather than pretending to call a live registry.
-export function CompanyProfileForm({ submitLabel = "Save changes" }) {
+export function CompanyProfileForm({ submitLabel = "Save changes", onSaved }) {
   const { tenant, refreshTenant } = useAuth();
   const [form, setForm] = useState({
     name: tenant?.name || "",
@@ -64,6 +64,7 @@ export function CompanyProfileForm({ submitLabel = "Save changes" }) {
       await api.patch("/tenants/me", { ...form, logoUrl: logoUrl || undefined });
       await refreshTenant();
       setSaved(true);
+      onSaved?.();
     } catch (err) {
       setError(err.message);
     } finally {

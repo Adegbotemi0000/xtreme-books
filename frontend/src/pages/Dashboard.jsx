@@ -13,9 +13,9 @@ import {
   Cell,
   Legend,
 } from "recharts";
+import { Building2, ArrowRight } from "lucide-react";
 import { api } from "../api/client";
 import { useAuth } from "../AuthContext";
-import { CompanySetup } from "./CompanySetup";
 
 const CATEGORY_COLORS = ["#0036f3", "#bced00", "#ff381d", "#595959", "#7d8fff", "#e2f77a", "#ff8a75", "#959da5"];
 
@@ -90,10 +90,6 @@ export function Dashboard() {
     api.get("/dashboard/kpis").then(setKpis);
   }, []);
 
-  if (tenant && !tenant.setup_completed) {
-    return <CompanySetup />;
-  }
-
   const cashFlowTrend = (kpis?.cashFlowTrend || []).map((m) => ({ ...m, label: monthLabel(m.month) }));
   const expenseByCategory = kpis?.expenseByCategory || [];
   const totalExpenseCategory = expenseByCategory.reduce((sum, c) => sum + c.total, 0);
@@ -109,6 +105,19 @@ export function Dashboard() {
       <div className="page-header">
         <h1>Welcome, {tenant?.name}</h1>
       </div>
+
+      {tenant && !tenant.setup_completed && (
+        <Link to="/company-setup" className="setup-banner">
+          <div className="setup-banner-icon">
+            <Building2 size={18} />
+          </div>
+          <div className="setup-banner-copy">
+            <strong>Finish setting up {tenant.name}</strong>
+            <span>Add your logo, brand color, and company details — takes about two minutes.</span>
+          </div>
+          <ArrowRight size={18} />
+        </Link>
+      )}
 
       {summary && (
         <>

@@ -8,6 +8,7 @@ import { LoginOtp } from "./pages/LoginOtp";
 import { Signup } from "./pages/Signup";
 import { VerifyEmail } from "./pages/VerifyEmail";
 import { Dashboard } from "./pages/Dashboard";
+import { CompanySetup } from "./pages/CompanySetup";
 import { Customers } from "./pages/Customers";
 import { Products } from "./pages/Products";
 import { Inventory } from "./pages/Inventory";
@@ -80,6 +81,7 @@ function AppRoutes() {
         }
       >
         <Route path="/" element={<Dashboard />} />
+        <Route path="/company-setup" element={<CompanySetup />} />
 
         <Route path="/invoices" element={<Invoices />} />
         <Route path="/invoices/new" element={<NewInvoice />} />
