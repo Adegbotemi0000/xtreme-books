@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { api } from "../api/client";
+import { ImportExport } from "./ImportExport";
 
 // Generic list+create page for modules scaffolded at basic-CRUD depth for
 // now (approval workflows / GL posting / depreciation runs land per-module
 // next). Real data, real backend — just not the full business logic yet.
-export function SimpleListPage({ title, description, apiPath, columns, formFields, hideDelete }) {
+export function SimpleListPage({ title, description, apiPath, columns, formFields, hideDelete, importable }) {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -92,6 +93,8 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
           </form>
         </div>
       )}
+
+      {importable && <ImportExport basePath={apiPath} onImported={load} />}
 
       <div className="card">
         {rows.length > 0 && (

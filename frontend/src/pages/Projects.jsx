@@ -5,6 +5,7 @@ export function Projects() {
     <SimpleListPage
       title="Projects"
       apiPath="/projects"
+      importable
       hideDelete
       columns={[
         { key: "name", label: "Name" },

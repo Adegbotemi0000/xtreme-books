@@ -5,6 +5,7 @@ export function Branches() {
     <SimpleListPage
       title="Branches"
       apiPath="/branches"
+      importable
       hideDelete
       columns={[
         { key: "name", label: "Name" },

@@ -3,6 +3,7 @@ const { pool } = require("../db/pool");
 const { requireAuth } = require("../middleware/auth");
 const { recordAudit } = require("../middleware/audit");
 const { asyncHandler } = require("./asyncHandler");
+const { attachImportExport } = require("./importExport");
 
 // Generic list+create(+soft-delete) router for the modules whose full
 // business logic (approval workflows, GL posting, depreciation runs, etc.)
@@ -11,7 +12,9 @@ const { asyncHandler } = require("./asyncHandler");
 // logic is scaffolded, not faked.
 //
 // `table` must be a column-safe identifier we control (not user input).
-function simpleListRouter({ table, entityType, columns, hasDeletedAt = true, orderBy = "id DESC" }) {
+// `importFields`, when given, attaches GET /import-template, POST /import,
+// and GET /export using the same insert path as POST / — see importExport.js.
+function simpleListRouter({ table, entityType, columns, hasDeletedAt = true, orderBy = "id DESC", importFields }) {
   const router = express.Router();
   router.use(requireAuth);
 
@@ -71,6 +74,32 @@ function simpleListRouter({ table, entityType, columns, hasDeletedAt = true, ord
         res.json({ ok: true });
       })
     );
+  }
+
+  if (importFields) {
+    attachImportExport(router, {
+      fields: importFields,
+      writeRoles: ["tenant_admin", "accountant"],
+      entityType,
+      createFn: async (record, tenantId, userId) => {
+        const keys = columns.filter((c) => record[c.key] !== undefined);
+        const colNames = keys.map((c) => c.column).join(", ");
+        const placeholders = keys.map((_, i) => `$${i + 2}`).join(", ");
+        const values = keys.map((c) => record[c.key]);
+        const { rows } = await pool.query(
+          `INSERT INTO ${table} (tenant_id, ${colNames}) VALUES ($1, ${placeholders}) RETURNING *`,
+          [tenantId, ...values]
+        );
+        return rows[0];
+      },
+      listFn: async (tenantId) => {
+        const { rows } = await pool.query(
+          `SELECT ${table}.* FROM ${table} WHERE ${table}.tenant_id = $1 ${deletedFilter} ORDER BY ${table}.${orderBy}`,
+          [tenantId]
+        );
+        return rows;
+      },
+    });
   }
 
   return router;

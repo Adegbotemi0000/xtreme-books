@@ -48,6 +48,13 @@ app.use(
       { key: "phone", column: "phone" },
       { key: "address", column: "address" },
     ],
+    importFields: [
+      { key: "name", label: "Name", required: true, example: "Acme Supplies Ltd" },
+      { key: "tin", label: "TIN", example: "12345678-0001" },
+      { key: "email", label: "Email", example: "hello@acme.com" },
+      { key: "phone", label: "Phone", example: "08012345678" },
+      { key: "address", label: "Address", example: "12 Marina Road, Lagos" },
+    ],
   })
 );
 
@@ -66,6 +73,10 @@ app.use(
     ],
     hasDeletedAt: false,
     orderBy: "name",
+    importFields: [
+      { key: "type", label: "Type", required: true, example: "expense" },
+      { key: "name", label: "Name", required: true, example: "Office supplies" },
+    ],
   })
 );
 
@@ -82,6 +93,13 @@ app.use(
       { key: "monthlySalary", column: "monthly_salary" },
     ],
     orderBy: "name",
+    importFields: [
+      { key: "name", label: "Name", required: true, example: "Chidinma Okafor" },
+      { key: "position", label: "Position", example: "Accountant" },
+      { key: "bankName", label: "Bank Name", example: "GTBank" },
+      { key: "bankAccountNumber", label: "Bank Account Number", example: "0123456789" },
+      { key: "monthlySalary", label: "Monthly Salary", example: 250000 },
+    ],
   })
 );
 
@@ -105,6 +123,12 @@ app.use(
     ],
     hasDeletedAt: false,
     orderBy: "name",
+    importFields: [
+      { key: "name", label: "Name", required: true, example: "Office Renovation" },
+      { key: "code", label: "Code", example: "PRJ-001" },
+      { key: "status", label: "Status", example: "active" },
+      { key: "budget", label: "Budget", example: 500000 },
+    ],
   })
 );
 
@@ -120,6 +144,11 @@ app.use(
     ],
     hasDeletedAt: false,
     orderBy: "name",
+    importFields: [
+      { key: "name", label: "Name", required: true, example: "Loyalty discount" },
+      { key: "type", label: "Type", required: true, example: "percentage" },
+      { key: "value", label: "Value", required: true, example: 10 },
+    ],
   })
 );
 
@@ -134,6 +163,10 @@ app.use(
     ],
     hasDeletedAt: false,
     orderBy: "name",
+    importFields: [
+      { key: "name", label: "Name", required: true, example: "Lekki Branch" },
+      { key: "address", label: "Address", example: "45 Admiralty Way, Lekki" },
+    ],
   })
 );
 

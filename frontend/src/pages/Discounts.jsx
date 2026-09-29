@@ -5,6 +5,7 @@ export function Discounts() {
     <SimpleListPage
       title="Discounts"
       apiPath="/discounts"
+      importable
       hideDelete
       columns={[
         { key: "name", label: "Name" },

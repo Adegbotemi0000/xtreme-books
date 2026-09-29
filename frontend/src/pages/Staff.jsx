@@ -5,6 +5,7 @@ export function Staff() {
     <SimpleListPage
       title="Staff"
       apiPath="/staff"
+      importable
       columns={[
         { key: "name", label: "Name" },
         { key: "position", label: "Position" },

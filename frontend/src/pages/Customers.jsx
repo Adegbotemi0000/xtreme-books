@@ -5,6 +5,7 @@ export function Customers() {
     <SimpleListPage
       title="Customers"
       apiPath="/customers"
+      importable
       columns={[
         { key: "name", label: "Name" },
         { key: "tin", label: "TIN" },
