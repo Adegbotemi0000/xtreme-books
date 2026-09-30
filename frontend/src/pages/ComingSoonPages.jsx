@@ -8,10 +8,6 @@ export const VendorCredits = () => (
   <ComingSoon module="Vendor Credits" description="Credit notes from suppliers, applied against future purchases." />
 );
 
-export const Budgets = () => (
-  <ComingSoon module="Budgets" description="Set per-account or per-project budgets and track actual vs. budget." />
-);
-
 export const FileManager = () => (
   <ComingSoon module="Documents" description="Central library of supporting documents attached across invoices, expenses, and assets — docs/02-modules.md 2.14." />
 );

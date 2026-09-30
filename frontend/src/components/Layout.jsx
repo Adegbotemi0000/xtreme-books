@@ -38,6 +38,7 @@ import {
   ChevronDown,
   RefreshCw,
   ArrowLeftRight,
+  PiggyBank,
 } from "lucide-react";
 import { useAuth } from "../AuthContext";
 import { ChatWidget } from "./ChatWidget";
@@ -98,7 +99,10 @@ const NAV_SECTIONS = [
   },
   {
     title: "Projects",
-    links: [{ to: "/projects", label: "Projects", icon: FolderKanban }],
+    links: [
+      { to: "/projects", label: "Projects", icon: FolderKanban },
+      { to: "/budgets", label: "Budgets", icon: PiggyBank },
+    ],
   },
   {
     title: "Reports",

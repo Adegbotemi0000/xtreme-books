@@ -42,10 +42,10 @@ import { Settings } from "./pages/Settings";
 import { Pos } from "./pages/Pos";
 import { RecurringExpenses } from "./pages/RecurringExpenses";
 import { BankReconciliation } from "./pages/BankReconciliation";
+import { Budgets } from "./pages/Budgets";
 import {
   Production,
   VendorCredits,
-  Budgets,
   FileManager,
   Reports,
   AuditPack,

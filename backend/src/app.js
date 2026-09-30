@@ -111,6 +111,7 @@ app.use("/api/payroll", require("./modules/payroll/routes"));
 app.use("/api/loans", require("./modules/loans/routes"));
 
 app.use("/api/fixed-assets", require("./modules/fixedAssets/routes"));
+app.use("/api/budgets", require("./modules/budgets/routes"));
 
 app.use(
   "/api/projects",
