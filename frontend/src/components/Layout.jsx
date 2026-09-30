@@ -36,6 +36,7 @@ import {
   Menu,
   X,
   ChevronDown,
+  RefreshCw,
 } from "lucide-react";
 import { useAuth } from "../AuthContext";
 import { ChatWidget } from "./ChatWidget";
@@ -75,6 +76,7 @@ const NAV_SECTIONS = [
       { to: "/inventory", label: "Inventory", icon: Boxes },
       { to: "/production", label: "Production", icon: Factory },
       { to: "/expenses", label: "Expenses", icon: Receipt },
+      { to: "/expenses/recurring", label: "Recurring Expenses", icon: RefreshCw },
       { to: "/branches", label: "Branches", icon: Building2, adminOnly: true },
     ],
   },

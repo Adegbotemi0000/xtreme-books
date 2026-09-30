@@ -1,6 +1,6 @@
 const { pool } = require("../../db/pool");
 
-const ALLOWED_ENTITY_TYPES = ["invoice", "purchase", "expense", "fixed_asset", "quotation", "loan", "product"];
+const ALLOWED_ENTITY_TYPES = ["invoice", "purchase", "expense", "fixed_asset", "quotation", "loan", "product", "recurring_expense"];
 
 async function create({ tenantId, entityType, entityId, originalFilename, mimeType, sizeBytes, buffer, userId }) {
   const { rows } = await pool.query(

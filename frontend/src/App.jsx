@@ -40,12 +40,12 @@ import { Trash } from "./pages/Trash";
 import { Logs } from "./pages/Logs";
 import { Settings } from "./pages/Settings";
 import { Pos } from "./pages/Pos";
+import { RecurringExpenses } from "./pages/RecurringExpenses";
 import {
   Production,
   VendorCredits,
   BankReconciliation,
   Budgets,
-  RecurringExpenses,
   FileManager,
   Reports,
   AuditPack,

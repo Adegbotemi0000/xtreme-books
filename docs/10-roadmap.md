@@ -41,11 +41,16 @@ the deployed environment, not just code-reviewed.
   figures, not an avatar-style launcher. This is the single highest-priority gap found in the
   audit — deliberately sequenced *after* finishing rollout of the features above across every
   module, not before.
-- ❌ Receipt/document upload still missing on Recurring Expenses, Inventory —
-  `xtreme-finance-system` has this on both.
-- ❌ No pagination on any list page yet. `xtreme-finance-system` added this to every remaining
-  unbounded list page as a dedicated pass — worth doing here before any tenant's list grows
-  past a page or two, not after.
+- ❌ Receipt/document upload still missing on Recurring Expenses — doesn't exist as a module
+  yet. Inventory is now done (reuses "product" as the entity type).
+- ✅ Pagination across every list page whose data genuinely grows unbounded — client-side
+  (slices an already-fetched array, not server-side LIMIT/OFFSET) via a shared `Pagination`
+  component, wired into `SimpleListPage` (9 pages) plus every custom list page (Invoices,
+  Purchases, Expenses, Fixed Assets, Inventory, Quotations, Receivables, Journals, Loans, Logs,
+  Trash, Payroll, POS sale history). Deliberately skipped Users (capped by plan tier), Tax
+  types/PAYE bands (small fixed config), and General Ledger/Trial Balance (conventionally show
+  a full period, not a paginated feed). Server-side paging is still the real fix once a
+  tenant's data outgrows what's reasonable to fetch in one request.
 - ❌ Dark mode — added to `xtreme-finance-system` post-launch; not started here.
 - ❌ Bank Reconciliation, Budget module, Vendor/Supplier Credits, Timesheet, and a real
   Reports Center (catalog + sharing + selectable charts) all exist in `xtreme-finance-system`
@@ -138,11 +143,11 @@ Tenant-scoped versions of the accounting modules already proven in `xtreme-finan
   Suppliers, Staff, Projects, Discounts, Branches, Expenses, Purchases, Fixed Assets, Invoices).
   Remaining candidates (Recurring Expenses, Inventory) don't exist as real modules yet — see
   their own phases.
-- ⚠️ Receipt/document upload on every transaction form — Invoices, Purchases, Expenses, Fixed
-  Assets done; Recurring Expenses and Inventory still missing (blocked on those modules
-  existing at all, not on the upload feature itself — see Status snapshot).
-- ❌ Pagination on every list page — `xtreme-finance-system` did this as a dedicated pass across
-  every remaining unbounded list; Kora has none yet.
+- ✅ Receipt/document upload on every transaction form that exists — Invoices, Purchases,
+  Expenses, Fixed Assets, Inventory done; Recurring Expenses is the only gap left, blocked on
+  that module existing at all, not on the upload feature itself.
+- ✅ Pagination on every list page whose data grows unbounded — see Status snapshot for the
+  full list and the (deliberate) exceptions.
 - ❌ Demo video hosting and documentation/resource centre live on the public site.
 - ❌ Legal pages finalized, CMS-editable.
 - ❌ Security review, QA pass, staging sign-off, production deployment, launch. The
