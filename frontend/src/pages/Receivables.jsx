@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -17,6 +18,8 @@ const BUCKETS = [
 export function Receivables() {
   const [invoices, setInvoices] = useState([]);
   const [loans, setLoans] = useState([]);
+  const [invoicePage, setInvoicePage] = useState(1);
+  const [loanPage, setLoanPage] = useState(1);
 
   useEffect(() => {
     api.get("/sales/invoices/receivables-ageing").then(setInvoices);
@@ -87,7 +90,7 @@ export function Receivables() {
               </tr>
             </thead>
             <tbody>
-              {invoices.map((r) => (
+              {invoices.slice((invoicePage - 1) * PAGE_SIZE, invoicePage * PAGE_SIZE).map((r) => (
                 <tr key={r.id}>
                   <td>
                     <Link to={`/invoices/${r.id}`}>{r.invoice_number}</Link>
@@ -103,6 +106,7 @@ export function Receivables() {
             </tbody>
           </table>
         )}
+        <Pagination page={invoicePage} totalItems={invoices.length} onChange={setInvoicePage} />
       </div>
 
       <div className="card">
@@ -121,7 +125,7 @@ export function Receivables() {
               </tr>
             </thead>
             <tbody>
-              {loans.map((l) => (
+              {loans.slice((loanPage - 1) * PAGE_SIZE, loanPage * PAGE_SIZE).map((l) => (
                 <tr key={l.id}>
                   <td>{l.counterparty_name}</td>
                   <td>{l.due_date ? new Date(l.due_date).toLocaleDateString() : "—"}</td>
@@ -131,6 +135,7 @@ export function Receivables() {
             </tbody>
           </table>
         )}
+        <Pagination page={loanPage} totalItems={loans.length} onChange={setLoanPage} />
       </div>
     </div>
   );

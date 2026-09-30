@@ -3,6 +3,7 @@ import { Paperclip } from "lucide-react";
 import { api } from "../api/client";
 import { ImportExport } from "../components/ImportExport";
 import { DocumentUpload } from "../components/DocumentUpload";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -14,6 +15,7 @@ export function FixedAssets() {
   const [form, setForm] = useState({ name: "", category: "", purchaseDate: new Date().toISOString().slice(0, 10), cost: "", usefulLifeYears: "", salvageValue: 0 });
   const [error, setError] = useState("");
   const [attachId, setAttachId] = useState(null);
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/fixed-assets").then(setAssets);
@@ -121,7 +123,7 @@ export function FixedAssets() {
               </tr>
             </thead>
             <tbody>
-              {assets.map((a) => (
+              {assets.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((a) => (
                 <tr key={a.id}>
                   <td>{a.name}</td>
                   <td>{a.category || "—"}</td>
@@ -152,6 +154,7 @@ export function FixedAssets() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={assets.length} onChange={setPage} />
       </div>
 
       {attachId && <DocumentUpload entityType="fixed_asset" entityId={attachId} />}

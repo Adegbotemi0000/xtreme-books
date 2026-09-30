@@ -3,6 +3,7 @@ import { Paperclip } from "lucide-react";
 import { api } from "../api/client";
 import { ImportExport } from "../components/ImportExport";
 import { DocumentUpload } from "../components/DocumentUpload";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -23,6 +24,7 @@ export function Expenses() {
   });
   const [error, setError] = useState("");
   const [attachId, setAttachId] = useState(null);
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/expenses").then(setExpenses);
@@ -135,7 +137,7 @@ export function Expenses() {
               </tr>
             </thead>
             <tbody>
-              {expenses.map((e) => (
+              {expenses.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((e) => (
                 <tr key={e.id}>
                   <td>{e.description}</td>
                   <td>{e.category_name || "Uncategorized"}</td>
@@ -155,6 +157,7 @@ export function Expenses() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={expenses.length} onChange={setPage} />
       </div>
 
       {attachId && <DocumentUpload entityType="expense" entityId={attachId} />}

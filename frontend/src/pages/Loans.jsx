@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -19,6 +20,7 @@ export function Loans() {
   });
   const [repayAmounts, setRepayAmounts] = useState({});
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/loans").then(setLoans);
@@ -121,7 +123,7 @@ export function Loans() {
               </tr>
             </thead>
             <tbody>
-              {loans.map((l) => (
+              {loans.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((l) => (
                 <tr key={l.id}>
                   <td style={{ textTransform: "capitalize" }}>{l.direction}</td>
                   <td>{l.counterparty_name}</td>
@@ -152,6 +154,7 @@ export function Loans() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={loans.length} onChange={setPage} />
       </div>
     </div>
   );

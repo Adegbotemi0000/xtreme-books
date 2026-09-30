@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 export function Logs() {
   const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     api.get("/logs").then(setRows);
@@ -28,7 +30,7 @@ export function Logs() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((r) => (
+              {rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((r) => (
                 <tr key={r.id}>
                   <td>{new Date(r.created_at).toLocaleString()}</td>
                   <td>{r.user_name || "System"}</td>
@@ -42,6 +44,7 @@ export function Logs() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={rows.length} onChange={setPage} />
       </div>
     </div>
   );

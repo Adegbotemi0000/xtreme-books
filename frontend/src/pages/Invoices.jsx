@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
 import { ImportExport } from "../components/ImportExport";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 export function Invoices() {
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/sales/invoices").then(setInvoices).finally(() => setLoading(false));
@@ -42,7 +44,7 @@ export function Invoices() {
               </tr>
             </thead>
             <tbody>
-              {invoices.map((inv) => (
+              {invoices.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((inv) => (
                 <tr key={inv.id}>
                   <td>
                     <Link to={`/invoices/${inv.id}`}>{inv.invoice_number}</Link>
@@ -59,6 +61,7 @@ export function Invoices() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={invoices.length} onChange={setPage} />
       </div>
     </div>
   );

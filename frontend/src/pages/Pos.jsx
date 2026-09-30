@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -13,6 +14,7 @@ export function Pos() {
   const [sales, setSales] = useState([]);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [salesPage, setSalesPage] = useState(1);
 
   function loadSales() {
     api.get("/pos").then(setSales);
@@ -160,7 +162,7 @@ export function Pos() {
               </tr>
             </thead>
             <tbody>
-              {sales.map((s) => (
+              {sales.slice((salesPage - 1) * PAGE_SIZE, salesPage * PAGE_SIZE).map((s) => (
                 <tr key={s.id}>
                   <td>{s.sale_number}</td>
                   <td>{new Date(s.date).toLocaleDateString()}</td>
@@ -174,6 +176,7 @@ export function Pos() {
             </tbody>
           </table>
         )}
+        <Pagination page={salesPage} totalItems={sales.length} onChange={setSalesPage} />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { api } from "../api/client";
 import { ImportExport } from "./ImportExport";
+import { Pagination, PAGE_SIZE } from "./Pagination";
 
 // Generic list+create page for modules scaffolded at basic-CRUD depth for
 // now (approval workflows / GL posting / depreciation runs land per-module
@@ -14,6 +15,7 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
   const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
 
   function load() {
     setLoading(true);
@@ -33,6 +35,13 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
       columns.some((c) => String(c.render ? c.render(row) : row[c.key] ?? "").toLowerCase().includes(q))
     );
   }, [rows, query, columns]);
+
+  useEffect(() => setPage(1), [query]);
+
+  const pagedRows = useMemo(
+    () => filteredRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+    [filteredRows, page]
+  );
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -133,7 +142,7 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
                 </tr>
               </thead>
               <tbody>
-                {filteredRows.map((row) => (
+                {pagedRows.map((row) => (
                   <tr key={row.id}>
                     {columns.map((c) => (
                       <td key={c.key}>{c.render ? c.render(row) : row[c.key]}</td>
@@ -149,9 +158,7 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
                 ))}
               </tbody>
             </table>
-            <p style={{ fontSize: "0.78rem", color: "var(--muted)", marginTop: 14, marginBottom: 0 }}>
-              Showing {filteredRows.length} of {rows.length}
-            </p>
+            <Pagination page={page} totalItems={filteredRows.length} onChange={setPage} />
           </>
         )}
       </div>

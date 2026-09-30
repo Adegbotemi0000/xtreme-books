@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Paperclip } from "lucide-react";
 import { api } from "../api/client";
+import { DocumentUpload } from "../components/DocumentUpload";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 // Real-time stock read from the same products table Products.jsx manages —
 // multi-branch tracking and stock movement history land alongside
@@ -10,6 +13,8 @@ export function Inventory() {
   const [qty, setQty] = useState("");
   const [reason, setReason] = useState("");
   const [error, setError] = useState("");
+  const [attachId, setAttachId] = useState(null);
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/products").then(setProducts);
@@ -60,7 +65,7 @@ export function Inventory() {
               </tr>
             </thead>
             <tbody>
-              {products.map((p) => (
+              {products.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((p) => (
                 <tr key={p.id}>
                   <td>{p.name}</td>
                   <td>{p.sku}</td>
@@ -84,9 +89,14 @@ export function Inventory() {
                         </button>
                       </div>
                     ) : (
-                      <button className="btn secondary" onClick={() => startAdjust(p)}>
-                        Adjust stock
-                      </button>
+                      <div style={{ display: "flex", gap: 6 }}>
+                        <button className="icon-btn" title="Attachments" onClick={() => setAttachId(attachId === p.id ? null : p.id)}>
+                          <Paperclip size={14} />
+                        </button>
+                        <button className="btn secondary" onClick={() => startAdjust(p)}>
+                          Adjust stock
+                        </button>
+                      </div>
                     )}
                   </td>
                 </tr>
@@ -94,7 +104,10 @@ export function Inventory() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={products.length} onChange={setPage} />
       </div>
+
+      {attachId && <DocumentUpload entityType="product" entityId={attachId} />}
     </div>
   );
 }

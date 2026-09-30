@@ -415,6 +415,37 @@ button {
   border-color: var(--muted-light);
 }
 
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.pagination-summary {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pagination-page {
+  font-size: 0.8rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

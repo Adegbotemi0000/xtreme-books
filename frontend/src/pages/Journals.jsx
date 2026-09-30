@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 export function Journals() {
   const [entries, setEntries] = useState([]);
+  const [page, setPage] = useState(1);
   const [glAccounts, setGlAccounts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
@@ -126,7 +128,7 @@ export function Journals() {
               </tr>
             </thead>
             <tbody>
-              {entries.map((e) => (
+              {entries.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((e) => (
                 <tr key={e.id}>
                   <td>
                     <Link to={`/journals/${e.id}`}>{e.entry_number}</Link>
@@ -139,6 +141,7 @@ export function Journals() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={entries.length} onChange={setPage} />
       </div>
     </div>
   );

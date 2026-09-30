@@ -4,6 +4,7 @@ import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
 import { ImportExport } from "../components/ImportExport";
 import { DocumentUpload } from "../components/DocumentUpload";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -17,6 +18,7 @@ export function Purchases() {
   const [form, setForm] = useState({ supplierId: "", date: new Date().toISOString().slice(0, 10), total: "" });
   const [error, setError] = useState("");
   const [attachId, setAttachId] = useState(null);
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/purchases").then(setPurchases);
@@ -131,7 +133,7 @@ export function Purchases() {
               </tr>
             </thead>
             <tbody>
-              {purchases.map((p) => (
+              {purchases.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((p) => (
                 <tr key={p.id}>
                   <td>{p.purchase_number}</td>
                   <td>{p.supplier_name}</td>
@@ -161,6 +163,7 @@ export function Purchases() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={purchases.length} onChange={setPage} />
       </div>
 
       {attachId && <DocumentUpload entityType="purchase" entityId={attachId} />}

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 export function Trash() {
   const [rows, setRows] = useState([]);
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/trash").then(setRows);
@@ -33,7 +35,7 @@ export function Trash() {
               </tr>
             </thead>
             <tbody>
-              {rows.map((r) => (
+              {rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((r) => (
                 <tr key={`${r.entityType}-${r.id}`}>
                   <td>{r.entityType}</td>
                   <td>{r.name}</td>
@@ -48,6 +50,7 @@ export function Trash() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={rows.length} onChange={setPage} />
       </div>
     </div>
   );

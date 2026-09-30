@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 function fmt(n) {
   return `₦${Number(n || 0).toLocaleString()}`;
@@ -13,6 +14,7 @@ export function Payroll() {
   const [form, setForm] = useState({ staffId: "", period: new Date().toISOString().slice(0, 7), grossPay: "", daysMissed: 0, pensionAmount: 0 });
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
 
   function load() {
     api.get("/payroll").then(setEntries);
@@ -132,7 +134,7 @@ export function Payroll() {
               </tr>
             </thead>
             <tbody>
-              {entries.map((e) => (
+              {entries.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((e) => (
                 <tr key={e.id}>
                   <td>{e.staff_name}</td>
                   <td>{e.period}</td>
@@ -145,6 +147,7 @@ export function Payroll() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={entries.length} onChange={setPage} />
       </div>
 
       <div className="card">

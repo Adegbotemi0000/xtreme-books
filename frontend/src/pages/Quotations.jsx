@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import { StatusPill } from "../components/StatusPill";
+import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 export function Quotations() {
   const [quotations, setQuotations] = useState([]);
+  const [page, setPage] = useState(1);
   const [customers, setCustomers] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [customerId, setCustomerId] = useState("");
@@ -135,7 +137,7 @@ export function Quotations() {
               </tr>
             </thead>
             <tbody>
-              {quotations.map((q) => (
+              {quotations.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((q) => (
                 <tr key={q.id}>
                   <td>{q.quotation_number}</td>
                   <td>{q.customer_name}</td>
@@ -155,6 +157,7 @@ export function Quotations() {
             </tbody>
           </table>
         )}
+        <Pagination page={page} totalItems={quotations.length} onChange={setPage} />
       </div>
     </div>
   );
