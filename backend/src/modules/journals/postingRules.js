@@ -125,6 +125,35 @@ async function postExpenseRecorded(client, { tenantId, expenseId, date, amount }
   );
 }
 
+// A supplier's credit note reduces what we owe them (Dr AP) and reverses
+// some of the expense it relates to (Cr General Expense) — Kora doesn't map
+// categories to distinct GL accounts the way xtreme-finance-system does
+// (categories here are for reporting/labeling, not GL routing), so this
+// always credits the same General Expense account postExpenseRecorded
+// debits, rather than a per-category account.
+async function postVendorCreditIssued(client, { tenantId, creditId, date, amount, reason, creditNumber }, userId) {
+  const [ap, expenseAccount] = await Promise.all([
+    getAccountIdByCode(tenantId, CODE.ACCOUNTS_PAYABLE),
+    getAccountIdByCode(tenantId, CODE.GENERAL_EXPENSE),
+  ]);
+
+  return postEntry(
+    client,
+    {
+      tenantId,
+      date,
+      memo: `Vendor credit ${creditNumber}`,
+      sourceType: "vendor_credit",
+      sourceId: creditId,
+      lines: [
+        { accountId: ap, debit: amount, credit: 0, description: reason || creditNumber },
+        { accountId: expenseAccount, debit: 0, credit: amount, description: reason || creditNumber },
+      ],
+    },
+    userId
+  );
+}
+
 async function postPurchaseApproved(client, { tenantId, purchaseId, date, total }, userId) {
   const [inventory, ap] = await Promise.all([
     getAccountIdByCode(tenantId, CODE.INVENTORY),
@@ -342,8 +371,8 @@ async function postAssetDisposal(client, { tenantId, assetId, date, cost, accumu
 }
 
 // The remaining post<Event> functions the full module set needs — stock
-// write-offs, wallet transactions, tax payments, vendor credits — land
-// alongside each of those modules' real build-out (see docs/02-modules.md).
+// write-offs, wallet transactions, tax payments — land alongside each of
+// those modules' real build-out (see docs/02-modules.md).
 
 module.exports = {
   CODE,
@@ -355,6 +384,7 @@ module.exports = {
   postExpenseRecorded,
   postPurchaseApproved,
   postSupplierPaymentMade,
+  postVendorCreditIssued,
   postLoanDisbursed,
   postLoanRepayment,
   postFixedAssetPurchased,

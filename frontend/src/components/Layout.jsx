@@ -39,6 +39,7 @@ import {
   RefreshCw,
   ArrowLeftRight,
   PiggyBank,
+  Undo2,
 } from "lucide-react";
 import { useAuth } from "../AuthContext";
 import { ChatWidget } from "./ChatWidget";
@@ -67,6 +68,7 @@ const NAV_SECTIONS = [
     title: "Purchasing",
     links: [
       { to: "/purchases", label: "Purchases", icon: ShoppingCart },
+      { to: "/vendor-credits", label: "Vendor Credits", icon: Undo2 },
       { to: "/suppliers", label: "Suppliers", icon: Truck },
     ],
   },

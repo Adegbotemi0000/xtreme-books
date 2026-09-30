@@ -43,9 +43,9 @@ import { Pos } from "./pages/Pos";
 import { RecurringExpenses } from "./pages/RecurringExpenses";
 import { BankReconciliation } from "./pages/BankReconciliation";
 import { Budgets } from "./pages/Budgets";
+import { VendorCredits } from "./pages/VendorCredits";
 import {
   Production,
-  VendorCredits,
   FileManager,
   Reports,
   AuditPack,

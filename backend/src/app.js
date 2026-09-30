@@ -61,6 +61,7 @@ app.use(
 );
 
 app.use("/api/purchases", require("./modules/purchases/routes"));
+app.use("/api/vendor-credits", require("./modules/vendorCredits/routes"));
 
 app.use("/api/expenses", require("./modules/expenses/routes"));
 app.use("/api/recurring-expenses", require("./modules/recurringExpenses/routes"));
