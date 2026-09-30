@@ -16,6 +16,29 @@ function normalizeHeader(h) {
   return String(h || "").trim().toLowerCase().replace(/[^a-z0-9]/g, "");
 }
 
+// Import templates ask for ISO dates (YYYY-MM-DD) but a real-world upload —
+// especially a bank statement export, which this app never authored the
+// template for — can arrive as a genuine Excel Date object (ExcelJS parsed
+// the cell natively), or DD-MM-YYYY/DD/MM/YYYY text. Left as-is if it's
+// already ISO, since a normalizing pass could otherwise corrupt a valid date
+// a tool already formatted correctly on save.
+function parseImportDate(value) {
+  if (value instanceof Date) {
+    const y = value.getUTCFullYear();
+    const m = String(value.getUTCMonth() + 1).padStart(2, "0");
+    const d = String(value.getUTCDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+  const str = String(value).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+  const dmyMatch = str.match(/^(\d{1,2})[-/](\d{1,2})[-/](\d{4})$/);
+  if (dmyMatch) {
+    const [, d, m, y] = dmyMatch;
+    return `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+  }
+  return str;
+}
+
 // Export reads straight off whatever listFn returns — a raw DB row, whose
 // columns are snake_case, while field keys are camelCase (matching the
 // createFn/import side, which builds its own INSERT and never needs this).
@@ -193,4 +216,4 @@ function attachImportExport(router, { fields, createFn, listFn, writeRoles, enti
   );
 }
 
-module.exports = { attachImportExport, buildTemplateBuffer, parseUploadRows, parseImportDate: (v) => v };
+module.exports = { attachImportExport, buildTemplateBuffer, parseUploadRows, parseImportDate, normalizeHeader };

@@ -41,10 +41,10 @@ import { Logs } from "./pages/Logs";
 import { Settings } from "./pages/Settings";
 import { Pos } from "./pages/Pos";
 import { RecurringExpenses } from "./pages/RecurringExpenses";
+import { BankReconciliation } from "./pages/BankReconciliation";
 import {
   Production,
   VendorCredits,
-  BankReconciliation,
   Budgets,
   FileManager,
   Reports,

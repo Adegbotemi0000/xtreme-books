@@ -8,10 +8,6 @@ export const VendorCredits = () => (
   <ComingSoon module="Vendor Credits" description="Credit notes from suppliers, applied against future purchases." />
 );
 
-export const BankReconciliation = () => (
-  <ComingSoon module="Bank Reconciliation" description="Match bank statement lines against recorded transactions per account." />
-);
-
 export const Budgets = () => (
   <ComingSoon module="Budgets" description="Set per-account or per-project budgets and track actual vs. budget." />
 );

@@ -37,6 +37,7 @@ import {
   X,
   ChevronDown,
   RefreshCw,
+  ArrowLeftRight,
 } from "lucide-react";
 import { useAuth } from "../AuthContext";
 import { ChatWidget } from "./ChatWidget";
@@ -84,6 +85,7 @@ const NAV_SECTIONS = [
     title: "Finance",
     links: [
       { to: "/accounts", label: "Cash & Bank", icon: Landmark },
+      { to: "/bank-reconciliation", label: "Bank Reconciliation", icon: ArrowLeftRight, adminOnly: true },
       { to: "/loans", label: "Loans", icon: Banknote },
       { to: "/tax", label: "Tax Centre", icon: ScrollText },
       { to: "/gl-accounts", label: "Chart of Accounts", icon: BookOpen },

@@ -25,6 +25,7 @@ app.use("/api/journals", require("./modules/journals/routes"));
 app.use("/api/sales", require("./modules/sales/routes"));
 app.use("/api/dashboard", require("./modules/dashboard/routes"));
 app.use("/api/accounts", require("./modules/accounts/routes"));
+app.use("/api/bank-reconciliation", require("./modules/bankReconciliation/routes"));
 app.use("/api/trash", require("./modules/trash/routes"));
 app.use("/api/tax", require("./modules/tax/routes"));
 app.use("/api/wallet", require("./modules/wallet/routes"));
