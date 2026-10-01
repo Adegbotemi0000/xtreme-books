@@ -108,6 +108,7 @@ app.use(
 );
 
 app.use("/api/payroll", require("./modules/payroll/routes"));
+app.use("/api/timesheets", require("./modules/timesheets/routes"));
 
 app.use("/api/loans", require("./modules/loans/routes"));
 

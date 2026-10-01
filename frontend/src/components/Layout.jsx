@@ -118,6 +118,7 @@ const NAV_SECTIONS = [
     links: [
       { to: "/users", label: "Users", icon: UserCog, adminOnly: true },
       { to: "/staff", label: "Staff", icon: UsersRound, adminOnly: true },
+      { to: "/timesheet", label: "Timesheet", icon: Clock, adminOnly: true },
       { to: "/payroll", label: "Payroll", icon: Banknote, adminOnly: true },
       { to: "/settings", label: "Settings", icon: SettingsIcon, adminOnly: true },
       { to: "/trash", label: "Trash", icon: Trash2, adminOnly: true },

@@ -44,12 +44,12 @@ import { RecurringExpenses } from "./pages/RecurringExpenses";
 import { BankReconciliation } from "./pages/BankReconciliation";
 import { Budgets } from "./pages/Budgets";
 import { VendorCredits } from "./pages/VendorCredits";
+import { Timesheet } from "./pages/Timesheet";
 import {
   Production,
   FileManager,
   Reports,
   AuditPack,
-  Timesheet,
 } from "./pages/ComingSoonPages";
 
 function RequireAuth({ children }) {

@@ -16,6 +16,3 @@ export const AuditPack = () => (
   <ComingSoon module="Audit-Ready Report Pack" description="A downloadable PDF/Excel bundle covering every core report, selectable by period — docs/02-modules.md 2.13." />
 );
 
-export const Timesheet = () => (
-  <ComingSoon module="Timesheet" description="Attendance/pro-rating input feeding payroll's attendance-based pay calculation." />
-);
