@@ -51,10 +51,13 @@ the deployed environment, not just code-reviewed.
   types/PAYE bands (small fixed config), and General Ledger/Trial Balance (conventionally show
   a full period, not a paginated feed). Server-side paging is still the real fix once a
   tenant's data outgrows what's reasonable to fetch in one request.
-- ❌ Dark mode — added to `xtreme-finance-system` post-launch; not started here.
-- ❌ Bank Reconciliation, Budget module, Vendor/Supplier Credits, Timesheet, and a real
-  Reports Center (catalog + sharing + selectable charts) all exist in `xtreme-finance-system`
-  but are still `ComingSoonPages.jsx` stubs here with no backend at all.
+- ⚠️ Dark mode — not started as of this line; see below, in progress this pass.
+- ✅ Bank Reconciliation, Budget module, Vendor/Supplier Credits, Timesheet, and Reports Center
+  (Income Statement + Balance Sheet) are now all real, built and verified end-to-end against
+  the deployed API and UI this session — the last `ComingSoonPages.jsx` stubs with real
+  underlying business value are gone. Remaining stubs (Production/BOM, File Manager, Audit-Ready
+  Pack, Cash Flow within Reports) were never in the agreed build order for this pass — see
+  Phase 5/7 below for what's still open and why each was deliberately left out.
 - ✅ Checked directly (not assumed): the "hard-delete orphans GL journal entries" bug
   `xtreme-finance-system` fixed can't occur here — Kora's Trash module
   (`backend/src/modules/trash/routes.js`) has no permanent-delete/purge endpoint at all, only
@@ -113,20 +116,21 @@ Tenant-scoped versions of the accounting modules already proven in `xtreme-finan
   staff advances.
 - ✅ Fixed Assets: register, depreciation, disposal.
 - ✅ Loans given/taken with repayment tracking.
-- ❌ Bank Reconciliation (CSV/XLSX/PDF statement upload + matching) — real in
-  `xtreme-finance-system`, not originally scoped in this roadmap; still a stub here. Slotted
-  here because it belongs next to Cash & Bank, not because it's blocked on the rest of Phase 4.
-- ❌ Budget module (with PDF/Excel export) — same story: real upstream, added after this
-  roadmap was first written, not started here.
+- ✅ Bank Reconciliation — CSV/XLSX statement upload + matching (PDF/OCR deliberately deferred,
+  same phasing `xtreme-finance-system` itself used — it needs a Node 20.16+ runtime dependency).
+  Not originally scoped in this roadmap; slotted here because it belongs next to Cash & Bank.
+- ✅ Budget module — per-category monthly budgets vs actual. PDF/Excel export left for a
+  follow-up; the core budget-vs-actual comparison was the higher-value piece to ship first.
 
 ## Phase 5 — Inventory Depth, Production & POS
 
 - ⚠️ Production/BOM with wastage tracking — page exists, still a `ComingSoonPages.jsx` stub.
 - ⚠️ Full multi-branch stock reporting — Branches module exists; reporting depth not built.
 - ✅ Point of Sale: cash/bank transfer/card/split payments, receipt printing, refunds/voids.
-- ❌ Vendor/Supplier Credits, Timesheet — real in `xtreme-finance-system`, added after this
-  roadmap was first written; both still stubs here. Slotted here as the closest fit, not
-  because either is blocked on POS.
+- ✅ Vendor/Supplier Credits — issue, apply to purchases, void. Adapted to Kora's simpler GL
+  model (categories aren't mapped to distinct GL accounts here, unlike upstream).
+- ✅ Timesheet — staff hours logged against an optional project. Standalone data capture;
+  Payroll's "days missed" stays a manual input, matching the reference's own scope.
 
 ## Phase 6 — Wallet, Virtual Accounts & KYC
 
@@ -136,8 +140,10 @@ Tenant-scoped versions of the accounting modules already proven in `xtreme-finan
 
 ## Phase 7 — Reporting Depth, Public Site Polish & Launch Readiness
 
-- ❌ Reports Center (catalog of reports + sharing + selectable charts, replacing the current
-  Reports stub) — real in `xtreme-finance-system`, added after this roadmap was first written.
+- ✅ Reports Center — Income Statement and Balance Sheet, computed directly from the GL and
+  verified balanced end-to-end. Cash Flow and the full catalog/sharing/selectable-charts
+  treatment are left for a follow-up; Cash Flow specifically needs cash-movement
+  categorization (operating/investing/financing) that doesn't exist yet.
 - ❌ Audit-Ready Report Pack (full bundle, all registers).
 - ✅ Full import/export coverage across every transactional module (Customers, Products,
   Suppliers, Staff, Projects, Discounts, Branches, Expenses, Purchases, Fixed Assets, Invoices).
