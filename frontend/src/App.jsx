@@ -45,10 +45,10 @@ import { BankReconciliation } from "./pages/BankReconciliation";
 import { Budgets } from "./pages/Budgets";
 import { VendorCredits } from "./pages/VendorCredits";
 import { Timesheet } from "./pages/Timesheet";
+import { Reports } from "./pages/Reports";
 import {
   Production,
   FileManager,
-  Reports,
   AuditPack,
 } from "./pages/ComingSoonPages";
 
