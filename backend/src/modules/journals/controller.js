@@ -3,7 +3,10 @@ const { recordAudit } = require("../../middleware/audit");
 const { asyncHandler } = require("../../utils/asyncHandler");
 
 const list = asyncHandler(async (req, res) => {
-  res.json(await model.listEntries(req.tenantId, req.query));
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const pageSize = Math.min(200, Math.max(1, parseInt(req.query.pageSize, 10) || 25));
+  const { data, total } = await model.listEntries(req.tenantId, { limit: pageSize, offset: (page - 1) * pageSize });
+  res.json({ data, total, page, pageSize });
 });
 
 const detail = asyncHandler(async (req, res) => {

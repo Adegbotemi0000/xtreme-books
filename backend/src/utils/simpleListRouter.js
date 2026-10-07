@@ -21,9 +21,28 @@ function simpleListRouter({ table, entityType, columns, hasDeletedAt = true, ord
   const selectCols = hasDeletedAt ? `${table}.*` : `${table}.*`;
   const deletedFilter = hasDeletedAt ? `AND ${table}.deleted_at IS NULL` : "";
 
+  // Pagination is opt-in via ?page= so every existing caller (the frontend's
+  // own client-side-paginated SimpleListPage, until it's updated; any script
+  // or integration hitting this endpoint today) keeps getting the plain
+  // array it always has — only a caller that explicitly asks for a page
+  // gets the {data, total, page, pageSize} shape back instead.
   router.get(
     "/",
     asyncHandler(async (req, res) => {
+      if (req.query.page) {
+        const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+        const pageSize = Math.min(200, Math.max(1, parseInt(req.query.pageSize, 10) || 25));
+        const offset = (page - 1) * pageSize;
+        const [{ rows }, { rows: countRows }] = await Promise.all([
+          pool.query(
+            `SELECT ${selectCols} FROM ${table} WHERE ${table}.tenant_id = $1 ${deletedFilter} ORDER BY ${table}.${orderBy} LIMIT $2 OFFSET $3`,
+            [req.tenantId, pageSize, offset]
+          ),
+          pool.query(`SELECT COUNT(*)::int AS count FROM ${table} WHERE ${table}.tenant_id = $1 ${deletedFilter}`, [req.tenantId]),
+        ]);
+        return res.json({ data: rows, total: countRows[0].count, page, pageSize });
+      }
+
       const { rows } = await pool.query(
         `SELECT ${selectCols} FROM ${table} WHERE ${table}.tenant_id = $1 ${deletedFilter} ORDER BY ${table}.${orderBy}`,
         [req.tenantId]

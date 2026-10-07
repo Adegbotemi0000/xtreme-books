@@ -5,6 +5,7 @@ import { Pagination, PAGE_SIZE } from "../components/Pagination";
 
 export function Journals() {
   const [entries, setEntries] = useState([]);
+  const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [glAccounts, setGlAccounts] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -17,9 +18,12 @@ export function Journals() {
   const [error, setError] = useState("");
 
   function load() {
-    api.get("/journals").then(setEntries);
+    api.get(`/journals?page=${page}&pageSize=${PAGE_SIZE}`).then((res) => {
+      setEntries(res.data);
+      setTotal(res.total);
+    });
   }
-  useEffect(load, []);
+  useEffect(load, [page]);
   useEffect(() => {
     api.get("/gl-accounts").then(setGlAccounts);
   }, []);
@@ -39,7 +43,8 @@ export function Journals() {
         { accountId: "", debit: "", credit: "" },
         { accountId: "", debit: "", credit: "" },
       ]);
-      load();
+      if (page === 1) load();
+      else setPage(1);
     } catch (err) {
       setError(err.message);
     }
@@ -128,7 +133,7 @@ export function Journals() {
               </tr>
             </thead>
             <tbody>
-              {entries.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((e) => (
+              {entries.map((e) => (
                 <tr key={e.id}>
                   <td>
                     <Link to={`/journals/${e.id}`}>{e.entry_number}</Link>
@@ -141,7 +146,7 @@ export function Journals() {
             </tbody>
           </table>
         )}
-        <Pagination page={page} totalItems={entries.length} onChange={setPage} />
+        <Pagination page={page} totalItems={total} onChange={setPage} />
       </div>
     </div>
   );

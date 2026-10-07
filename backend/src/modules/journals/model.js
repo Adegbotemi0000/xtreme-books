@@ -106,12 +106,19 @@ async function reverseEntriesForSource(client, tenantId, sourceType, sourceId, u
   }
 }
 
-async function listEntries(tenantId, { limit = 50, offset = 0 } = {}) {
-  const { rows } = await pool.query(
-    `SELECT * FROM journal_entries WHERE tenant_id = $1 ORDER BY date DESC, id DESC LIMIT $2 OFFSET $3`,
-    [tenantId, limit, offset]
-  );
-  return rows;
+// Was previously capped at a default limit of 50 with no total count and no
+// way for the frontend to page past it — anything older than the 50 most
+// recent entries was silently unreachable. Now always returns a real total
+// alongside the page, so the frontend can show (and page through) everything.
+async function listEntries(tenantId, { limit = 25, offset = 0 } = {}) {
+  const [{ rows }, { rows: countRows }] = await Promise.all([
+    pool.query(
+      `SELECT * FROM journal_entries WHERE tenant_id = $1 ORDER BY date DESC, id DESC LIMIT $2 OFFSET $3`,
+      [tenantId, limit, offset]
+    ),
+    pool.query("SELECT COUNT(*)::int AS count FROM journal_entries WHERE tenant_id = $1", [tenantId]),
+  ]);
+  return { data: rows, total: countRows[0].count };
 }
 
 async function getEntry(tenantId, id) {

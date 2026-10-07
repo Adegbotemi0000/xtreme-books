@@ -7,8 +7,18 @@ import { Pagination, PAGE_SIZE } from "./Pagination";
 // Generic list+create page for modules scaffolded at basic-CRUD depth for
 // now (approval workflows / GL posting / depreciation runs land per-module
 // next). Real data, real backend — just not the full business logic yet.
+//
+// Paging strategy: while the search box is empty, this fetches one page at
+// a time from the server (?page=&pageSize=) rather than the whole table —
+// the real fix for a tenant's list outgrowing a single request. The moment
+// someone types a search, there's no way to match across the *whole* table
+// from just the current page, so it falls back to fetching the full list
+// once and filtering/paging client-side, same as before — correctness over
+// server-side paging in that one case.
 export function SimpleListPage({ title, description, apiPath, columns, formFields, hideDelete, importable }) {
-  const [rows, setRows] = useState([]);
+  const [serverRows, setServerRows] = useState([]);
+  const [serverTotal, setServerTotal] = useState(0);
+  const [allRows, setAllRows] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
@@ -17,31 +27,49 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
 
+  const searching = query.trim() !== "";
+
   function load() {
     setLoading(true);
-    api
-      .get(apiPath)
-      .then(setRows)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+    setError("");
+    if (searching) {
+      api
+        .get(apiPath)
+        .then(setAllRows)
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    } else {
+      api
+        .get(`${apiPath}?page=${page}&pageSize=${PAGE_SIZE}`)
+        .then((res) => {
+          setServerRows(res.data);
+          setServerTotal(res.total);
+        })
+        .catch((err) => setError(err.message))
+        .finally(() => setLoading(false));
+    }
   }
 
-  useEffect(load, [apiPath]);
+  useEffect(load, [apiPath, searching ? null : page, searching]);
 
   const filteredRows = useMemo(() => {
-    if (!query.trim()) return rows;
+    if (!searching || !allRows) return [];
     const q = query.toLowerCase();
-    return rows.filter((row) =>
+    return allRows.filter((row) =>
       columns.some((c) => String(c.render ? c.render(row) : row[c.key] ?? "").toLowerCase().includes(q))
     );
-  }, [rows, query, columns]);
+  }, [allRows, searching, query, columns]);
 
   useEffect(() => setPage(1), [query]);
 
-  const pagedRows = useMemo(
+  const searchPagedRows = useMemo(
     () => filteredRows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
     [filteredRows, page]
   );
+
+  const displayRows = searching ? searchPagedRows : serverRows;
+  const displayTotal = searching ? filteredRows.length : serverTotal;
+  const hasAnyRows = searching ? (allRows?.length ?? 0) > 0 : serverTotal > 0;
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -106,7 +134,7 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
       {importable && <ImportExport basePath={apiPath} onImported={load} />}
 
       <div className="card">
-        {rows.length > 0 && (
+        {(hasAnyRows || searching) && (
           <div style={{ position: "relative", marginBottom: 16, maxWidth: 320 }}>
             <Search size={15} style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "var(--muted-light)" }} />
             <input
@@ -126,9 +154,9 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
 
         {loading ? (
           <p>Loading...</p>
-        ) : rows.length === 0 ? (
+        ) : !hasAnyRows ? (
           <div className="empty-state">No records yet.</div>
-        ) : filteredRows.length === 0 ? (
+        ) : displayRows.length === 0 ? (
           <div className="empty-state">No results for "{query}".</div>
         ) : (
           <>
@@ -142,7 +170,7 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
                 </tr>
               </thead>
               <tbody>
-                {pagedRows.map((row) => (
+                {displayRows.map((row) => (
                   <tr key={row.id}>
                     {columns.map((c) => (
                       <td key={c.key}>{c.render ? c.render(row) : row[c.key]}</td>
@@ -158,7 +186,7 @@ export function SimpleListPage({ title, description, apiPath, columns, formField
                 ))}
               </tbody>
             </table>
-            <Pagination page={page} totalItems={filteredRows.length} onChange={setPage} />
+            <Pagination page={page} totalItems={displayTotal} onChange={setPage} />
           </>
         )}
       </div>
