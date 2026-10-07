@@ -6,7 +6,17 @@ build phases. Since this is being built with continuity from `xtreme-finance-sys
 faster than a from-scratch build would — the phases below sequence by dependency, not by a
 fixed calendar.
 
-## Status snapshot (2026-09-29)
+## Status snapshot (2026-10-07)
+
+Dark mode and every "smaller feature gap" from the previous snapshot are now closed: Cash Flow
+Statement, Audit-Ready Pack (downloadable Excel bundle), Production/BOM with wastage tracking,
+multi-branch stock reporting, and server-side pagination on the two highest-value targets
+(simpleListRouter, Journals — the rest stay client-side for now, a deliberate scope decision,
+not an oversight). Every item below was verified end-to-end against the deployed API and UI,
+not just code-reviewed. Next milestone: migrating off Vercel preview onto cPanel + the
+business's own Postgres, once the team has reviewed how everything looks and behaves.
+
+## Status snapshot (2026-09-29) — superseded, kept for history
 
 Public marketing site is live (`https://kora-website-zeta.vercel.app`). The tenant app is
 scaffolded and deployed for team preview (`https://kora-app-tau.vercel.app`, API at
@@ -51,12 +61,15 @@ the deployed environment, not just code-reviewed.
   types/PAYE bands (small fixed config), and General Ledger/Trial Balance (conventionally show
   a full period, not a paginated feed). Server-side paging is still the real fix once a
   tenant's data outgrows what's reasonable to fetch in one request.
-- ⚠️ Dark mode — not started as of this line; see below, in progress this pass.
-- ✅ Bank Reconciliation, Budget module, Vendor/Supplier Credits, Timesheet, and Reports Center
-  (Income Statement + Balance Sheet) are now all real, built and verified end-to-end against
-  the deployed API and UI this session — the last `ComingSoonPages.jsx` stubs with real
-  underlying business value are gone. Remaining stubs (Production/BOM, File Manager, Audit-Ready
-  Pack, Cash Flow within Reports) were never in the agreed build order for this pass — see
+- ✅ Dark mode — a real second theme (sidebar was always near-black; the content area now has
+  its own dark surface/border/text steps), applied before first paint, toggle persisted via
+  localStorage. Verified both auto-detection from system preference and the manual toggle.
+- ✅ Bank Reconciliation, Budget module, Vendor/Supplier Credits, Timesheet, Reports Center
+  (Income Statement, Balance Sheet, **and now Cash Flow**), Audit-Ready Pack (Excel bundle of
+  all core statements + GL detail), Production/BOM (with wastage tracking), and multi-branch
+  stock reporting are now all real, built and verified end-to-end against the deployed API and
+  UI. The only remaining `ComingSoonPages.jsx` stub is File Manager — never in the agreed build
+  order for this pass — see
   Phase 5/7 below for what's still open and why each was deliberately left out.
 - ✅ Checked directly (not assumed): the "hard-delete orphans GL journal entries" bug
   `xtreme-finance-system` fixed can't occur here — Kora's Trash module
@@ -124,8 +137,15 @@ Tenant-scoped versions of the accounting modules already proven in `xtreme-finan
 
 ## Phase 5 — Inventory Depth, Production & POS
 
-- ⚠️ Production/BOM with wastage tracking — page exists, still a `ComingSoonPages.jsx` stub.
-- ⚠️ Full multi-branch stock reporting — Branches module exists; reporting depth not built.
+- ✅ Production/BOM with wastage tracking — reusable recipes (bom_templates) scale by quantity
+  produced; each voucher stores quantity_expected alongside quantity_used per material, so
+  wastage (actual - recipe-expected) is visible per run, not just a generic BOM.
+- ✅ Multi-branch stock reporting — products.stock_quantity stays the tenant-wide total every
+  write path (POS, Production, manual adjust) already targets; adjust-stock now optionally
+  tags an adjustment to a branch, building a real per-branch breakdown (product_branch_stock)
+  that Inventory's new "By branch" view reports against, with "Unallocated" stock always
+  reconciling back to the same total — not a full branch-mandatory rewrite of every write path,
+  which would have been a much bigger, riskier change than the actual reporting gap.
 - ✅ Point of Sale: cash/bank transfer/card/split payments, receipt printing, refunds/voids.
 - ✅ Vendor/Supplier Credits — issue, apply to purchases, void. Adapted to Kora's simpler GL
   model (categories aren't mapped to distinct GL accounts here, unlike upstream).
@@ -140,20 +160,27 @@ Tenant-scoped versions of the accounting modules already proven in `xtreme-finan
 
 ## Phase 7 — Reporting Depth, Public Site Polish & Launch Readiness
 
-- ✅ Reports Center — Income Statement and Balance Sheet, computed directly from the GL and
-  verified balanced end-to-end. Cash Flow and the full catalog/sharing/selectable-charts
-  treatment are left for a follow-up; Cash Flow specifically needs cash-movement
-  categorization (operating/investing/financing) that doesn't exist yet.
-- ❌ Audit-Ready Report Pack (full bundle, all registers).
-- ✅ Full import/export coverage across every transactional module (Customers, Products,
-  Suppliers, Staff, Projects, Discounts, Branches, Expenses, Purchases, Fixed Assets, Invoices).
-  Remaining candidates (Recurring Expenses, Inventory) don't exist as real modules yet — see
-  their own phases.
-- ✅ Receipt/document upload on every transaction form that exists — Invoices, Purchases,
-  Expenses, Fixed Assets, Inventory done; Recurring Expenses is the only gap left, blocked on
-  that module existing at all, not on the upload feature itself.
-- ✅ Pagination on every list page whose data grows unbounded — see Status snapshot for the
-  full list and the (deliberate) exceptions.
+- ✅ Reports Center — Income Statement, Balance Sheet, and Cash Flow Statement, all computed
+  directly from the GL. Cash Flow uses the direct method (each journal source_type that posts
+  against Cash & Bank bucketed into Operating/Investing/Financing), verified against the
+  Balance Sheet's own Cash & Bank balance exactly. The full catalog/sharing/selectable-charts
+  treatment from the reference implementation is left for a follow-up.
+- ✅ Audit-Ready Report Pack — one downloadable Excel workbook bundling Trial Balance, Income
+  Statement, Balance Sheet, Cash Flow, and full General Ledger detail. Scoped to what's already
+  real here; the reference's fuller bundle (Payables Aging, Fixed Asset Register, Tax Summary,
+  Sales/Purchases/Loan/Payroll Registers) would each need a new dedicated query — left for a
+  follow-up rather than stubbed in.
+- ⚠️ Import/export coverage across every transactional module (Customers, Products, Suppliers,
+  Staff, Projects, Discounts, Branches, Expenses, Purchases, Fixed Assets, Invoices) — Recurring
+  Expenses and Production exist now but never got the Template/Import/Export bar; a real,
+  small follow-up, not blocked on anything.
+- ✅ Receipt/document upload on every transaction form that has a place to attach one —
+  Invoices, Purchases, Expenses, Fixed Assets, Inventory, **and Recurring Expenses** (reuses
+  the "product"/"recurring_expense" entity types already in `documents.ALLOWED_ENTITY_TYPES`).
+- ⚠️ Pagination — client-side everywhere, **plus real server-side pagination** on
+  simpleListRouter (6 modules) and Journals now. Converting every remaining custom list page
+  to server-side is a contained, well-understood follow-up, deliberately not done in one pass
+  right before the cPanel migration.
 - ❌ Demo video hosting and documentation/resource centre live on the public site.
 - ❌ Legal pages finalized, CMS-editable.
 - ❌ Security review, QA pass, staging sign-off, production deployment, launch. The
@@ -168,5 +195,3 @@ Tenant-scoped versions of the accounting modules already proven in `xtreme-finan
 - Documentation/usage guides, authored as modules stabilize (mirrors how
   `xtreme-finance-system`'s user guide and training video were produced once the app was
   feature-complete, not before).
-- Dark mode toggle — added to `xtreme-finance-system` post-launch as a whole-app pass; not
-  started here, and not blocking any phase above.
