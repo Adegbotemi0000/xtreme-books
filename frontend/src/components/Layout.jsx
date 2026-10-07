@@ -40,10 +40,13 @@ import {
   ArrowLeftRight,
   PiggyBank,
   Undo2,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useAuth } from "../AuthContext";
 import { ChatWidget } from "./ChatWidget";
 import { applyBrandColor } from "../lib/brandColor";
+import { getInitialTheme, applyTheme } from "../lib/theme";
 
 // Nav grouping mirrors docs/02-modules.md + docs/03-platform-modules.md —
 // one section per module family, matching xtreme-finance-system's
@@ -137,6 +140,7 @@ export function Layout() {
 
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem(COLLAPSE_KEY) === "1");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [theme, setTheme] = useState(getInitialTheme);
   const [collapsedSections, setCollapsedSections] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(SECTIONS_KEY) || "{}");
@@ -156,6 +160,10 @@ export function Layout() {
   useEffect(() => {
     if (tenant?.brand_color) applyBrandColor(tenant.brand_color);
   }, [tenant?.brand_color]);
+
+  useEffect(() => {
+    applyTheme(theme);
+  }, [theme]);
 
   function toggleSection(title) {
     setCollapsedSections((prev) => ({ ...prev, [title]: !prev[title] }));
@@ -247,6 +255,15 @@ export function Layout() {
           </button>
           <div />
           <div className="topbar-user">
+            <button
+              type="button"
+              className="icon-btn"
+              onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
             <span style={{ fontSize: "0.86rem", fontWeight: 600 }}>{user?.name}</span>
             <div className="avatar">{initials}</div>
             <button className="btn secondary" onClick={() => { logout(); navigate("/login"); }}>

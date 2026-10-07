@@ -166,7 +166,7 @@ export function Dashboard() {
                       <Cell key={entry.name} fill={entry.color} />
                     ))}
                   </Pie>
-                  <Tooltip formatter={(v) => fmt(v)} contentStyle={{ borderRadius: 8, fontSize: 12 }} />
+                  <Tooltip formatter={(v) => fmt(v)} contentStyle={{ borderRadius: 8, fontSize: 12, background: "var(--surface)", borderColor: "var(--border)", color: "var(--text)" }} />
                 </PieChart>
               </ResponsiveContainer>
               <div className="dashboard-chart-totals">
@@ -195,7 +195,7 @@ export function Dashboard() {
                           <Cell key={entry.category} fill={CATEGORY_COLORS[i % CATEGORY_COLORS.length]} />
                         ))}
                       </Pie>
-                      <Tooltip formatter={(v) => fmt(v)} contentStyle={{ borderRadius: 8, fontSize: 12 }} />
+                      <Tooltip formatter={(v) => fmt(v)} contentStyle={{ borderRadius: 8, fontSize: 12, background: "var(--surface)", borderColor: "var(--border)", color: "var(--text)" }} />
                     </PieChart>
                   </ResponsiveContainer>
                   <ul className="dashboard-legend">
@@ -231,7 +231,7 @@ export function Dashboard() {
                     width={40}
                     tickFormatter={(v) => (v >= 1000000 ? `${(v / 1000000).toFixed(0)}M` : v >= 1000 ? `${(v / 1000).toFixed(0)}k` : v)}
                   />
-                  <Tooltip formatter={(v) => fmt(v)} contentStyle={{ borderRadius: 8, fontSize: 12 }} />
+                  <Tooltip formatter={(v) => fmt(v)} contentStyle={{ borderRadius: 8, fontSize: 12, background: "var(--surface)", borderColor: "var(--border)", color: "var(--text)" }} />
                   <Legend wrapperStyle={{ fontSize: 12 }} />
                   <Bar dataKey="cashIn" name="Cash in" fill="#0036f3" radius={[3, 3, 0, 0]} />
                   <Bar dataKey="cashOut" name="Cash out" fill="#ff381d" radius={[3, 3, 0, 0]} />

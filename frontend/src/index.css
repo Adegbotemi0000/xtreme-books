@@ -29,6 +29,35 @@
   --sidebar-w-collapsed: 76px;
   --topbar-h: 60px;
   font-family: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+
+/* Dark mode — a real second theme, not an inverted filter: the sidebar was
+   always near-black (the brand's own identity), so this mainly re-grounds
+   the light content area onto dark surfaces with enough contrast steps
+   (bg -> surface -> border) to keep card edges and table rows legible,
+   and nudges --primary/--danger a step lighter since the saturated light-mode
+   values lose contrast against a dark background. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --primary: #4d6bff;
+  --primary-dark: #7f97ff;
+  --primary-light: #16214a;
+  --lime: #bced00;
+  --lime-dark: #d4ff2e;
+  --bg: #0b0d10;
+  --surface: #15171b;
+  --border: #272b30;
+  --text: #f1f2f4;
+  --muted: #9aa1a8;
+  --muted-light: #656b71;
+  --danger: #ff5c45;
+  --danger-dark: #ff7a66;
+  --success: #a3d634;
+  --warning: #e0ac4a;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 6px 20px -6px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 50px -16px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -236,7 +265,7 @@ button {
   padding: 0 24px;
   height: var(--topbar-h);
   border-bottom: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.85);
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
   backdrop-filter: blur(8px);
   position: sticky;
   top: 0;
