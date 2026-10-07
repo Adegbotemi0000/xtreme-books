@@ -33,6 +33,7 @@ app.use("/api/wallet", require("./modules/wallet/routes"));
 app.use("/api/logs", require("./modules/logs/routes"));
 app.use("/api/tenants", require("./modules/tenants/routes"));
 app.use("/api/pos", require("./modules/pos/routes"));
+app.use("/api/production", require("./modules/production/routes"));
 app.use("/api/documents", require("./modules/documents/routes"));
 app.use("/api/assistant", require("./modules/assistant/routes"));
 

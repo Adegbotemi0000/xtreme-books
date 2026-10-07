@@ -47,10 +47,8 @@ import { VendorCredits } from "./pages/VendorCredits";
 import { Timesheet } from "./pages/Timesheet";
 import { Reports } from "./pages/Reports";
 import { AuditPack } from "./pages/AuditPack";
-import {
-  Production,
-  FileManager,
-} from "./pages/ComingSoonPages";
+import { Production } from "./pages/Production";
+import { FileManager } from "./pages/ComingSoonPages";
 
 function RequireAuth({ children }) {
   const { user, loading } = useAuth();
