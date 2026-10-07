@@ -24,6 +24,8 @@ attachImportExport(router, {
 });
 
 router.get("/", controller.list);
+// Must land before GET /:id, or "stock-by-branch" gets parsed as an id.
+router.get("/stock-by-branch", controller.stockByBranch);
 router.get("/:id", controller.detail);
 router.post("/", controller.create);
 router.put("/:id", controller.update);
