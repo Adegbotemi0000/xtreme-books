@@ -8,7 +8,3 @@ export const FileManager = () => (
   <ComingSoon module="Documents" description="Central library of supporting documents attached across invoices, expenses, and assets — docs/02-modules.md 2.14." />
 );
 
-export const AuditPack = () => (
-  <ComingSoon module="Audit-Ready Report Pack" description="A downloadable PDF/Excel bundle covering every core report, selectable by period — docs/02-modules.md 2.13." />
-);
-

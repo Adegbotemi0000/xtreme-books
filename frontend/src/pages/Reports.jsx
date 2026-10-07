@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, FileBarChart, Scale3d } from "lucide-react";
+import { ArrowLeft, FileBarChart, Scale3d, Waves } from "lucide-react";
 import { api } from "../api/client";
 
 function fmt(n) {
@@ -229,6 +229,104 @@ function BalanceSheetReport({ onBack }) {
   );
 }
 
+function CashFlowReport({ onBack }) {
+  const today = new Date().toISOString().slice(0, 10);
+  const [from, setFrom] = useState(`${new Date().getFullYear()}-01-01`);
+  const [to, setTo] = useState(today);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState("");
+
+  function load() {
+    api.get(`/reports/cash-flow?from=${from}&to=${to}`).then(setData).catch((err) => setError(err.message));
+  }
+  useEffect(load, []);
+
+  function Section({ title, rows, total }) {
+    return (
+      <>
+        <h3>{title}</h3>
+        <table>
+          <tbody>
+            {rows.length === 0 ? (
+              <tr><td className="empty-state">No activity in this period.</td></tr>
+            ) : (
+              rows.map((r) => (
+                <tr key={r.sourceType}>
+                  <td>{r.label}</td>
+                  <td style={{ textAlign: "right", color: r.amount < 0 ? "var(--danger)" : "var(--text)" }}>{fmt(r.amount)}</td>
+                </tr>
+              ))
+            )}
+            <tr style={{ fontWeight: 700, borderTop: "2px solid var(--border)" }}>
+              <td>Net cash from {title.toLowerCase()}</td>
+              <td style={{ textAlign: "right", color: total < 0 ? "var(--danger)" : "var(--text)" }}>{fmt(total)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </>
+    );
+  }
+
+  return (
+    <div>
+      <button className="btn secondary" style={{ marginBottom: 14 }} onClick={onBack}>
+        <ArrowLeft size={14} /> Back to Reports
+      </button>
+      <div className="page-header">
+        <h1>Cash Flow Statement</h1>
+      </div>
+
+      <div className="card" style={{ marginBottom: 16 }}>
+        <div style={{ display: "flex", gap: 10, alignItems: "end", flexWrap: "wrap" }}>
+          <div className="field">
+            <label>From</label>
+            <input type="date" value={from} onChange={(e) => setFrom(e.target.value)} />
+          </div>
+          <div className="field">
+            <label>To</label>
+            <input type="date" value={to} onChange={(e) => setTo(e.target.value)} />
+          </div>
+          <button className="btn" onClick={load}>
+            Run report
+          </button>
+        </div>
+      </div>
+
+      {error && <div className="error-banner">{error}</div>}
+      {!data ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="card">
+          <p style={{ marginTop: 0, color: "var(--muted)", fontSize: "0.86rem" }}>
+            Direct method — each line is the actual cash movement posted to Cash &amp; Bank for that kind of
+            transaction, not derived from net income.
+          </p>
+          <Section title="Operating Activities" rows={data.operating} total={data.totalOperating} />
+          <Section title="Investing Activities" rows={data.investing} total={data.totalInvesting} />
+          <Section title="Financing Activities" rows={data.financing} total={data.totalFinancing} />
+
+          <table>
+            <tbody>
+              <tr>
+                <td>Opening cash balance</td>
+                <td style={{ textAlign: "right" }}>{fmt(data.openingCash)}</td>
+              </tr>
+              <tr style={{ fontWeight: 700 }}>
+                <td>Net change in cash</td>
+                <td style={{ textAlign: "right", color: data.netChange < 0 ? "var(--danger)" : "var(--text)" }}>{fmt(data.netChange)}</td>
+              </tr>
+              <tr style={{ fontWeight: 800, fontSize: "1.05rem", borderTop: "3px double var(--text)" }}>
+                <td>Closing cash balance</td>
+                <td style={{ textAlign: "right" }}>{fmt(data.closingCash)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}
+
 const REPORT_CATALOG = [
   {
     key: "income-statement",
@@ -242,6 +340,12 @@ const REPORT_CATALOG = [
     description: "Assets, liabilities, and equity as of a chosen date.",
     icon: Scale3d,
   },
+  {
+    key: "cash-flow",
+    title: "Cash Flow Statement",
+    description: "Operating, investing, and financing cash movements for a chosen period.",
+    icon: Waves,
+  },
 ];
 
 export function Reports() {
@@ -249,6 +353,7 @@ export function Reports() {
 
   if (openReport === "income-statement") return <IncomeStatementReport onBack={() => setOpenReport(null)} />;
   if (openReport === "balance-sheet") return <BalanceSheetReport onBack={() => setOpenReport(null)} />;
+  if (openReport === "cash-flow") return <CashFlowReport onBack={() => setOpenReport(null)} />;
 
   return (
     <div>
@@ -258,7 +363,7 @@ export function Reports() {
       <p style={{ color: "var(--muted)", marginTop: -12, marginBottom: 20 }}>
         Core financial statements, computed directly from the General Ledger.
       </p>
-      <div className="dashboard-row dashboard-row-2">
+      <div className="dashboard-row dashboard-row-3">
         {REPORT_CATALOG.map((r) => {
           const Icon = r.icon;
           return (

@@ -46,10 +46,10 @@ import { Budgets } from "./pages/Budgets";
 import { VendorCredits } from "./pages/VendorCredits";
 import { Timesheet } from "./pages/Timesheet";
 import { Reports } from "./pages/Reports";
+import { AuditPack } from "./pages/AuditPack";
 import {
   Production,
   FileManager,
-  AuditPack,
 } from "./pages/ComingSoonPages";
 
 function RequireAuth({ children }) {
